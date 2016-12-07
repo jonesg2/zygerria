@@ -37,7 +37,7 @@ leafMap <- function(mapData, fill = NULL, bounds) {
     )
 
     # Generate a colour palette
-    pal <- if (length(table(test@data[, fill])) == 4) {
+    pal <- if (length(table(mapData@data[, fill])) == 4) {
       colorQuantile("Greens", mapData@data[, fill], n = 4)
     } else {
       colorQuantile("Greens", mapData@data[, fill], n = 10)
