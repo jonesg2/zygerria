@@ -1,3 +1,6 @@
+# load the package library
+library(employmentProspects)
+
 # shiny libraries
 library(shiny)
 library(shinydashboard)
