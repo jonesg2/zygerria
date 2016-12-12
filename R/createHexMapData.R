@@ -34,9 +34,9 @@ getAttr <- function(x) {
   d <- as.data.frame(d)
   data.frame(long = d$X,
              lat = -d$Y,
-             id =  xml2::xml_attr(x, "id"),
-             lad15nm = xml2::xml_attr(x, "data-nm"),
+             lad15cd =  gsub("reg", "", xml2::xml_attr(x, "id")),
+             lad15nm = xml2::xml_attr(x, "data-nm"))#,
              # Value = as.numeric(xml2::xml_attr(x, "data_val")),
              # Boundary = sample(c(TRUE, FALSE), size = 6, replace = TRUE),
-             lad15cd = substr(xml2::xml_attr(x, "id"), 4, 6))
+             # = substr(xml2::xml_attr(x, "id"), 4, 6))
 }
