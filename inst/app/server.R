@@ -1,12 +1,16 @@
 server <- function(input, output) {
 
+  # load in the statistics data
+  empStat <- reactive({
+    if (is.null(input$employData)) return(NULL)
+    read.csv(input$employData$datapath,
+             stringsAsFactors = FALSE,
+             check.names = FALSE)
+  })
+
   # create the data for the leaflet map
   leafData <- reactive({
-    if (is.null(input$employData)) return(NULL)
-    empData <- read.csv(input$employData$datapath,
-                        stringsAsFactors = FALSE,
-                        check.names = FALSE)
-    createLeafletData(data = empData)
+    createLeafletData(data = empStat())
   })
 
   # calculate the edges of the map
@@ -39,5 +43,18 @@ server <- function(input, output) {
       colnames(selectData) <- c("Statistic", "Value")
       datatable(selectData, rownames = FALSE)
     })
+  })
+
+  # merge the statistics data with the hexagon map data
+  hexData <- reactive({
+    dplyr::left_join(hexMapData, empStat(), by = c("lad15nm" = "LA Name"))
+  })
+
+  # output the hex map
+  output$hexMap <- renderPlotly({
+    validate(
+      need(input$employData, "Please upload employment statistics")
+    )
+    plotHexMap(hexData(), stat = paste0("`", input$colHex, "`"))
   })
 }

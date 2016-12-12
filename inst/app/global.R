@@ -8,9 +8,9 @@ library(DT)
 
 # data manipulation libraries
 library(dplyr)
+library(sp)
 
 # plotting libraries
 library(ggplot2)
-#library(plotly)
+library(plotly)
 library(leaflet)
-library(sp)

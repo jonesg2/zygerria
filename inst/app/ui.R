@@ -3,8 +3,8 @@ header <- dashboardHeader(title = "Local Authority Map")
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Information", tabName = "info", icon = icon("info-circle")),
-    #menuItem("Map", icon = icon("map-marker"), tabName = "map"),
-    menuItem("Leaflet Map", icon = icon("envira"), tabName = "leaf")
+    menuItem("Leaflet Map", icon = icon("envira"), tabName = "leaf"),
+    menuItem("Hex Map", icon = icon("map-marker"), tabName = "hex")
   )
 )
 
@@ -55,6 +55,29 @@ body <- dashboardBody(
           width = 6,
           height = 600,
           dataTableOutput("ladDat")
+        )
+      )
+    ),
+    tabItem(
+      tabName = "hex",
+      column(
+        width = 12,
+        box(
+          width = 6,
+          # offer a choice of statistics
+          selectInput(
+            "colHex",
+            label = "Select a statistic",
+            choices = dataColumnChoices
+          )
+        )
+      ),
+      column(
+        width = 12,
+        box(
+          width = 6,
+          height = 600,
+          plotlyOutput("hexMap")
         )
       )
     )
