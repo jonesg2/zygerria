@@ -32,11 +32,14 @@ getAttr <- function(x) {
               byrow = TRUE)
   colnames(d) <- c("X", "Y")
   d <- as.data.frame(d)
-  data.frame(long = d$X,
-             lat = -d$Y,
-             lad15cd =  gsub("reg", "", xml2::xml_attr(x, "id")),
-             lad15nm = xml2::xml_attr(x, "data-nm"))#,
-             # Value = as.numeric(xml2::xml_attr(x, "data_val")),
-             # Boundary = sample(c(TRUE, FALSE), size = 6, replace = TRUE),
-             # = substr(xml2::xml_attr(x, "id"), 4, 6))
+  data.frame(
+    long = d$X,
+    lat = -d$Y,
+    lad15cd =  as.character(gsub("reg", "", xml2::xml_attr(x, "id"))),
+    lad15nm = as.character(xml2::xml_attr(x, "data-nm")),
+    stringsAsFactors = FALSE
+  )#,
+  # Value = as.numeric(xml2::xml_attr(x, "data_val")),
+  # Boundary = sample(c(TRUE, FALSE), size = 6, replace = TRUE),
+  # = substr(xml2::xml_attr(x, "id"), 4, 6))
 }
