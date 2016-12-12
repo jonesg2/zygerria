@@ -7,7 +7,7 @@
 mapPlot(data, fill)
 }
 \arguments{
-\item{data}{The dataset produced by \code{\link{createMapData}}}
+\item{data}{The dataset produced by \code{\link{createPlotlyData}}}
 
 \item{fill}{The statistic by which the map should be filled}
 }

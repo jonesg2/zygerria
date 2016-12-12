@@ -33,7 +33,7 @@ getAttr <- function(x) {
   colnames(d) <- c("X", "Y")
   d <- as.data.frame(d)
   data.frame(long = d$X,
-             lat = d$Y,
+             lat = -d$Y,
              id =  xml2::xml_attr(x, "id"),
              lad15nm = xml2::xml_attr(x, "data-nm"),
              # Value = as.numeric(xml2::xml_attr(x, "data_val")),

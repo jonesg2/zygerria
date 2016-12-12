@@ -3,7 +3,7 @@
 #' Generate a map of the UK which interactively fills each Local Authority
 #' District (LAD) based on its statistics.
 #'
-#' @param data The dataset produced by \code{\link{createMapData}}
+#' @param data The dataset produced by \code{\link{createPlotlyData}}
 #' @param fill The statistic by which the map should be filled
 #'
 #' @author Nathan Eastwood

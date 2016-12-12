@@ -22,7 +22,7 @@
 #' @export
 plotHexMap <- function(data, stat = NULL, plotly = TRUE) {
   g <- ggplot2::ggplot(
-    data = data, ggplot2::aes(x = long, y = -lat, group = lad15nm)
+    data = data, ggplot2::aes_string(x = "long", y = "lat", group = "lad15nm")
   )
   if (!is.null(stat)) {
     g <- g +

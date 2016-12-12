@@ -6,9 +6,11 @@
 #'
 #' @author Nathan Eastwood
 #'
+#' @importFrom sp spTransform CRS
+#'
 #' @export
 createLeafletData <- function(data) {
-  trans <- spTransform(shape, CRS("+init=epsg:4326"))
+  trans <- sp::spTransform(shape, sp::CRS("+init=epsg:4326"))
   trans@data <- dplyr::left_join(trans@data, data,
                                  by = c("lad15nm" = "LA Name")) %>%
     as.data.frame()

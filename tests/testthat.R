@@ -1,4 +1,4 @@
 library(testthat)
-library(ladMap)
+library(employmentProspects)
 
-test_check("ladMap")
+test_check("employmentProspects")
