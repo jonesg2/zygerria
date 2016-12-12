@@ -38,7 +38,11 @@ plotHexMap <- function(data, stat = NULL, plotly = TRUE) {
 
   # Return the plot
   if (plotly) {
-    plotly::ggplotly(g)
+    if (!is.null(stat)) {
+      plotly::ggplotly(g, tooltip = c("group", "fill"))
+    } else {
+      plotly::ggplotly(g, tooltip = c("group"))
+    }
   } else {
     g
   }
