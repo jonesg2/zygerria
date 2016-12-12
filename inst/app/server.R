@@ -1,10 +1,5 @@
 server <- function(input, output) {
 
-  # render the plotly map
-  # output$ly_map <- renderPlotly({
-  #   mapPlot(data = mapData, fill = input$colSelect)
-  # })
-
   # create the data for the leaflet map
   leafData <- reactive({
     if (is.null(input$employData)) return(NULL)

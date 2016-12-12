@@ -21,22 +21,6 @@ body <- dashboardBody(
         )
       )
     ),
-    # plotly map
-    # tabItem(
-    #   tabName = "map",
-    #   fluidRow(
-    #     selectInput(
-    #       "colSelect",
-    #       label = "Select a statistic",
-    #       choices = colnames(ladData)[-c(1, 2)]
-    #     ),
-    #     column(
-    #       width = 12,
-    #       plotlyOutput(outputId = "ly_map", width = 520, height = 820)
-    #     )
-    #   )
-    # ),
-    # leaflet map
     tabItem(
       tabName = "leaf",
       column(
