@@ -38,7 +38,9 @@ leafMap <- function(mapData, fill = NULL, bounds) {
 
     # Generate a colour palette
     pal <- if (length(table(mapData@data[, fill])) == 4) {
-      colorQuantile("Greens", mapData@data[, fill], n = 4)
+      domain_min <- min(mapData@data[, fill], na.rm = TRUE)
+      domain_max <- max(mapData@data[, fill], na.rm = TRUE)
+      colorFactor("Greens", factor(mapData@data[, fill]))
     } else {
       domain_min <- min(roundDown(mapData@data[, fill]), na.rm = TRUE)
       domain_max <- max(roundUp(mapData@data[, fill]), na.rm = TRUE)
@@ -56,8 +58,17 @@ leafMap <- function(mapData, fill = NULL, bounds) {
         color = "#BDBDC3",
         popup = details,
         layerId = mapData$lad15cd
-      ) %>%
-      addLegend(pal = pal, values = mapData@data[, fill])
+      )
+    if (length(table(mapData@data[, fill])) == 4) {
+      map <-
+        map %>%
+        addLegend(pal = pal, values = mapData@data[, fill])
+    } else {
+      map <-
+        map %>%
+        addLegend(pal = pal, values = mapData@data[, fill],
+                  labFormat = labelFormat(suffix = "%"))
+    }
   }
   map
 }
