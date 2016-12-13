@@ -37,7 +37,10 @@ plotHexMap <- function(data, stat = NULL, plotly = TRUE) {
   }
 
   # Ensure the theme elements are removed
-  g <- g + ggplot2::theme_void()
+  g <-
+    g +
+    ggplot2::theme_void() +
+    ggplot2::theme(legend.position = "bottom")
 
   # Return the plot
   if (plotly) {
