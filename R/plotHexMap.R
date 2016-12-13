@@ -30,17 +30,18 @@ plotHexMap <- function(data, stat = NULL, plotly = TRUE) {
       ggplot2::geom_polygon(
         ggplot2::aes_string(fill = stat, colour = stat)
       ) +
-      ggplot2::scale_fill_distiller(palette = "Greens") +
-      ggplot2::scale_color_distiller(palette = "Greens")
+      ggplot2::scale_fill_distiller(
+        "Value", palette = "Greens", direction = 1
+      ) +
+      ggplot2::scale_color_distiller(
+        "Value", palette = "Greens", direction = 1
+      )
   } else {
     g <- g + ggplot2::geom_polygon()
   }
 
   # Ensure the theme elements are removed
-  g <-
-    g +
-    ggplot2::theme_void() +
-    ggplot2::theme(legend.position = "bottom")
+  g <- g + ggplot2::theme_void()
 
   # Return the plot
   if (plotly) {
