@@ -3,6 +3,12 @@ header <- dashboardHeader(title = "Local Authority Map")
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Information", tabName = "info", icon = icon("info-circle")),
+    # upload the employment statistics data
+    fileInput(
+      "employData",
+      label = "Upload the employment data"
+
+    ),
     menuItem("Leaflet Map", icon = icon("envira"), tabName = "leaf"),
     menuItem("Hex Map", icon = icon("map-marker"), tabName = "hex")
   )
@@ -25,15 +31,6 @@ body <- dashboardBody(
       tabName = "leaf",
       column(
         width = 12,
-        # upload the employment statistics data
-        box(
-          width = 6,
-          fileInput(
-            "employData",
-            label = "Upload the employment data"
-
-          )
-        ),
         box(
           width = 6,
           # offer a choice of statistics
