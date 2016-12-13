@@ -74,7 +74,7 @@ body <- dashboardBody(
         box(
           width = 6,
           height = 600,
-          plotlyOutput("hexMap")
+          plotlyOutput("hexMap", height = "600px")
         )
       )
     )
