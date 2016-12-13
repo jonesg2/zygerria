@@ -28,7 +28,9 @@ plotHexMap <- function(data, stat = NULL, plotly = TRUE) {
     g <- g +
       ggplot2::geom_polygon(
         ggplot2::aes_string(fill = stat, colour = stat)
-      )
+      ) +
+      ggplot2::scale_fill_distiller(palette = "Greens") +
+      ggplot2::scale_color_distiller(palette = "Greens")
   } else {
     g <- g + ggplot2::geom_polygon()
   }
