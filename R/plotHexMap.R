@@ -17,6 +17,7 @@
 #' @author Nathan Eastwood, Douglas Ashton
 #'
 #' @importFrom ggplot2 ggplot geom_polygon aes aes_string theme_void
+#'   scale_fill_distiller scale_colour_distiller
 #' @importFrom plotly ggplotly
 #'
 #' @export
