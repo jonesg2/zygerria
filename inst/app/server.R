@@ -24,7 +24,7 @@ server <- function(input, output) {
     validate(
       need(input$employData, "Please upload employment statistics")
     )
-    leafMap(mapData = leafData(), fill = input$colLeaf, bounds = bounds())
+    leafMap(mapData = leafData(), fill = input$stat, bounds = bounds())
   })
 
   # on a plot click, display the region's data in a table
@@ -55,6 +55,6 @@ server <- function(input, output) {
     validate(
       need(input$employData, "Please upload employment statistics")
     )
-    plotHexMap(hexData(), stat = paste0("`", input$colHex, "`"))
+    plotHexMap(hexData(), stat = paste0("`", input$stat, "`"))
   })
 }
