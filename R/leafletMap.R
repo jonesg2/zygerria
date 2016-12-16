@@ -111,9 +111,7 @@ styleMap <- function(map, style = list(background = 'transparent')) {
     jsCode = htmlwidgets::JS(
       "function(el, x, style) {
          var myMap = this;
-         if($.isEmptyObject(myMap._container.style)) {
-           myMap._container.style = {};
-         }
+         myMap._container.style = myMap._container.style || {};
          $.each(style, function(key, value) {
            myMap._container.style[key] = value;
          });
