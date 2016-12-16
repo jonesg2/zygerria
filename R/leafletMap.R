@@ -70,7 +70,11 @@ leafMap <- function(mapData, fill = NULL, bounds, hex = FALSE) {
         fillOpacity = 0.8,
         color = "#BDBDC3",
         popup = details,
-        layerId = mapData$lad15cd
+        layerId = mapData$lad15cd,
+        highlightOptions = highlightOptions(
+          color = "#4E0388",
+          weight = 2
+        )
       )
     if (length(table(mapData@data[, fill])) == 4) {
       map <-
