@@ -4,6 +4,7 @@ sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Information", tabName = "info", icon = icon("info-circle")),
     menuItem("Hex Map", icon = icon("map-marker"), tabName = "map"),
+    menuItem("Scatter Graph", icon = icon("line-chart"), tabName = "scat"),
     # upload the employment statistics data
     fileInput(
       "employData",
@@ -46,7 +47,7 @@ body <- dashboardBody(
           height = 600,
           tabPanel(
             "Hex Map",
-            plotlyOutput("hexMap", height = 600)
+            leafletOutput("hexMap", height = 600)
           ),
           tabPanel(
             "Leaf Map",
@@ -57,6 +58,21 @@ body <- dashboardBody(
           width = 6,
           height = 600,
           dataTableOutput("ladDat")
+        )
+      )
+    ),
+    tabItem(
+      tabName = "scat",
+      column(
+        width = 12,
+        box(
+          width = 6,
+          height = 600,
+          plotOutput("scatFig", height = 600, click = "plot_click")
+        ),
+        box(
+          width = 6,
+          tableOutput("test")
         )
       )
     )

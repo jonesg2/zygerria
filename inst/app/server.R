@@ -5,7 +5,14 @@ server <- function(input, output) {
     if (is.null(input$employData)) return(NULL)
     read.csv(input$employData$datapath,
              stringsAsFactors = FALSE,
-             check.names = FALSE)
+             check.names = FALSE) %>%
+      mutate(
+        empRate = if_else(
+          `Employment rate (%)` < 73, "red",
+          if_else(`Employment rate (%)` >= 73 & `Employment rate (%)` < 77,
+                  "orange",
+                  "green"))
+      )
   })
 
   # create the data for the leaflet map
@@ -14,7 +21,7 @@ server <- function(input, output) {
   })
 
   # calculate the edges of the map
-  bounds <- reactive({
+  boundsLeaf <- reactive({
     req(input$employData)
     bbox(leafData())
   })
@@ -24,7 +31,7 @@ server <- function(input, output) {
     validate(
       need(input$employData, "Please upload employment statistics")
     )
-    leafMap(mapData = leafData(), fill = input$stat, bounds = bounds())
+    leafMap(mapData = leafData(), fill = input$stat, bounds = boundsLeaf())
   })
 
   # on a plot click, display the region's data in a table
@@ -47,14 +54,38 @@ server <- function(input, output) {
 
   # merge the statistics data with the hexagon map data
   hexData <- reactive({
-    dplyr::left_join(hexMapData, empStat(), by = c("lad15nm" = "LA Name"))
+    hexMapJson@data <- dplyr::left_join(
+      hexMapJson@data, empStat(), by = c("lad15nm" = "LA Name")
+    )
+    hexMapJson
+  })
+
+  boundsHex <- reactive({
+    req(input$employData)
+    bbox(hexData())
   })
 
   # output the hex map
-  output$hexMap <- renderPlotly({
+  output$hexMap <- renderLeaflet({
     validate(
       need(input$employData, "Please upload employment statistics")
     )
-    plotHexMap(hexData(), stat = paste0("`", input$stat, "`"))
+    leafMap(hexData(), fill = input$stat, bounds = boundsHex(), hex = TRUE)
+  })
+
+  # output the scatter graph
+  output$scatFig <- renderPlot({
+    validate(
+      need(input$employData, "Please upload employment statistics")
+    )
+    compositeScatter(empStat(), plotly = FALSE)
+  })
+
+  output$test <- renderTable({
+    res <- nearPoints(empStat(), input$plot_click,
+                      "`Measure A (Total / (3*379) *100)`",
+                      "`Measure B (Total / (5*379)*100)`")
+    if (nrow(res) == 0) return()
+    res
   })
 }
