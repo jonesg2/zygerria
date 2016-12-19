@@ -14,3 +14,6 @@ library(sp)
 library(ggplot2)
 library(plotly)
 library(leaflet)
+
+# select input choices
+colChoices <- dataColumnChoices[c(12, 5:7, 24, 13:17), "full"]
