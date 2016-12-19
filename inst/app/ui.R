@@ -32,11 +32,16 @@ body <- dashboardBody(
         width = 12,
         box(
           # offer a choice of statistics
+          width = 6,
           selectInput(
             "stat",
-            label = "Select a statistic",
-            choices = colChoices
+            label = "Select a composite variable",
+            choices = c("Measure A", "Measure B")
           )
+        ),
+        box(
+          width = 6,
+          uiOutput("underlying")
         )
       ),
       column(
