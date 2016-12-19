@@ -1,4 +1,6 @@
 short,full
+la_code,LA Code
+la_name,LA Name
 emp_rate,Employment rate (%)
 emp_quar,"Employment Quartile (1 = highest, 4 = lowest)"
 di_prop,Persons employed in declining industries as a proportion of total employment (%)

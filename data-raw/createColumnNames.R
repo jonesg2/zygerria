@@ -9,6 +9,7 @@
 #' @author Nathan Eastwood
 createColumnNames <- function(overwrite = TRUE) {
   file <- devtools::package_file("data-raw", "columnNames.csv")
-  cols <- read.csv(file, check.names = FALSE, stringsAsFactors = FALSE)
-  devtools::use_data(cols, overwrite = overwrite)
+  dataColumnChoices <- read.csv(file, check.names = FALSE,
+                                stringsAsFactors = FALSE)
+  devtools::use_data(dataColumnChoices, overwrite = overwrite)
 }
