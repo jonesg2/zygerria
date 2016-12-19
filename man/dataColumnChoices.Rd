@@ -4,13 +4,14 @@
 \name{dataColumnChoices}
 \alias{dataColumnChoices}
 \title{UK Employment Statistics Choices}
-\format{A \code{vector} wth 29 observations.}
+\format{A \code{data.frame} wth 31 observations and 2 columns.}
 \usage{
 data(dataColumnChoices)
 }
 \description{
 Choices of UK Employment Statistics available in the data. This data set is
-used within the Shiny App.
+used within the Shiny App and maps the full column names to their short hand
+counter parts.
 }
 \keyword{datasets}
 
