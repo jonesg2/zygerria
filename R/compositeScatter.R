@@ -24,10 +24,10 @@ compositeScatter <- function (data, plotly = TRUE) {
     ggplot2::geom_vline(xintercept = 50) +
     ggplot2::geom_hline(yintercept = 50) +
     ggplot2::geom_point(
-      ggplot2::aes(x = `Measure A (Total / (3*379) *100)`,
-                   y = `Measure B (Total / (5*379)*100)`,
-                   colour = empRate,
-                   shape = empRate),
+      ggplot2::aes(x = measure_a,
+                   y = measure_b,
+                   colour = emp_rate_hml,
+                   shape = emp_rate_hml),
       size = 2
     ) +
     ggplot2::scale_colour_manual(

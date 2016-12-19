@@ -35,7 +35,7 @@ body <- dashboardBody(
           selectInput(
             "stat",
             label = "Select a statistic",
-            choices = dataColumnChoices
+            choices = dataColumnChoices[, "full"]
           )
         )
       ),

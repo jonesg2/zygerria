@@ -15,7 +15,7 @@ createPlotlyData <- function(data) {
   shapeData$objectid <- as.integer(shapeData$objectid)
 
   # join the shapefile data and the lad stats
-  allData <- dplyr::full_join(shapeData, data, by = c("lad15cd" = "LA Code"))
+  allData <- dplyr::full_join(shapeData, data, by = c("lad15cd" = "la_code"))
 
   # extract the coordiantes data to plot
   coordsHold <- data.frame(long = NA, lat = NA, group = NA, order = NA)

@@ -1,5 +1,10 @@
 server <- function(input, output) {
 
+  # extract the short name to match the data
+  short_name <- reactive({
+    dataColumnChoices[dataColumnChoices$full == input$stat, "short"]
+  })
+
   # load in the statistics data
   empStat <- reactive({
     if (is.null(input$employData)) return(NULL)
@@ -7,9 +12,9 @@ server <- function(input, output) {
              stringsAsFactors = FALSE,
              check.names = FALSE) %>%
       mutate(
-        empRate = if_else(
-          `Employment rate (%)` < 73, "red",
-          if_else(`Employment rate (%)` >= 73 & `Employment rate (%)` < 77,
+        emp_rate_hml = if_else(
+          emp_rate < 73, "red",
+          if_else(emp_rate >= 73 & emp_rate < 77,
                   "orange",
                   "green"))
       )
@@ -31,7 +36,7 @@ server <- function(input, output) {
     validate(
       need(input$employData, "Please upload employment statistics")
     )
-    leafMap(mapData = leafData(), fill = input$stat, bounds = boundsLeaf())
+    leafMap(mapData = leafData(), fill = short_name(), bounds = boundsLeaf())
   })
 
   # on a plot click, display the region's data in a table
@@ -43,7 +48,7 @@ server <- function(input, output) {
         data.frame(
           "Statistic" = colnames(leafData()@data)[8:36],
           "Value" = t(
-            leafData()@data[leafData()@data$`LA Code` %in% event, 8:36]
+            leafData()@data[leafData()@data$la_code %in% event, 8:36]
           ),
           stringsAsFactors = FALSE
         )
@@ -55,7 +60,7 @@ server <- function(input, output) {
   # merge the statistics data with the hexagon map data
   hexData <- reactive({
     hexMapJson@data <- dplyr::left_join(
-      hexMapJson@data, empStat(), by = c("lad15nm" = "LA Name")
+      hexMapJson@data, empStat(), by = c("lad15nm" = "la_name")
     )
     hexMapJson
   })
@@ -70,7 +75,7 @@ server <- function(input, output) {
     validate(
       need(input$employData, "Please upload employment statistics")
     )
-    leafMap(hexData(), fill = input$stat, bounds = boundsHex(), hex = TRUE)
+    leafMap(hexData(), fill = short_name(), bounds = boundsHex(), hex = TRUE)
   })
 
   # output the scatter graph
@@ -82,9 +87,7 @@ server <- function(input, output) {
   })
 
   output$test <- renderTable({
-    res <- nearPoints(empStat(), input$plot_click,
-                      "`Measure A (Total / (3*379) *100)`",
-                      "`Measure B (Total / (5*379)*100)`")
+    res <- nearPoints(empStat(), input$plot_click, "measure_a", "measure_b")
     if (nrow(res) == 0) return()
     res
   })

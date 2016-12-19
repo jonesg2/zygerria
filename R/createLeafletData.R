@@ -12,7 +12,7 @@
 createLeafletData <- function(data) {
   trans <- sp::spTransform(shape, sp::CRS("+init=epsg:4326"))
   trans@data <- dplyr::left_join(trans@data, data,
-                                 by = c("lad15nm" = "LA Name")) %>%
+                                 by = c("lad15nm" = "la_name")) %>%
     as.data.frame()
   trans
 }
