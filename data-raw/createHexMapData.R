@@ -8,7 +8,7 @@
 #' @importFrom xml2 read_xml xml_find_all
 #' @export
 createHexMapData <- function() {
-  file <- system.file("data-raw", "hexmap.xml", package = "employmentProspects")
+  file <- devtools::package_file("data-raw", "hexmap.xml")
   x <- xml2::read_xml(file)
   xlist <- xml2::xml_find_all(x, "path")
   dlist <- lapply(xlist, getAttr)

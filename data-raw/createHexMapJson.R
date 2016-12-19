@@ -7,8 +7,7 @@
 #'
 #' @export
 createHexMapJson <- function() {
-  file <- system.file("data-raw", "geography.json",
-                      package = "employmentProspects")
+  file <- devtools::package_file("data-raw", "geography.json")
   data <- rgdal::readOGR(file)
   colnames(data@data) <- c("id", "lad15cd", "lad15nm")
   data@data$id <- as.character(data@data$id)
