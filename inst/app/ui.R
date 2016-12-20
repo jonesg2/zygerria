@@ -36,12 +36,12 @@ body <- dashboardBody(
           selectInput(
             "stat",
             label = "Select a composite variable",
-            choices = c("Measure A", "Measure B")
+            choices = list(
+              "Measure A" = dataColumnChoices[c(12, 5:7), "full"],
+              "Measure B" = dataColumnChoices[c(24, 13:17), "full"]
+            ),
+            selected = dataColumnChoices[12, "full"]
           )
-        ),
-        box(
-          width = 6,
-          uiOutput("underlying")
         )
       ),
       column(

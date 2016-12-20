@@ -2,7 +2,7 @@ server <- function(input, output) {
 
   # extract the short name to match the data
   short_name <- reactive({
-    dataColumnChoices[dataColumnChoices$full == input$measure, "short"]
+    dataColumnChoices[dataColumnChoices$full == input$stat, "short"]
   })
 
   # load in the statistics data
@@ -18,23 +18,6 @@ server <- function(input, output) {
                   "orange",
                   "green"))
       )
-  })
-
-  # create a dynamic ui for the statistical data to be shown
-  output$underlying <- renderUI({
-    switch(
-      input$stat,
-      "Measure A" = selectInput(
-        "measure", "Select the underlying variable",
-        choices = dataColumnChoices[c(12, 5:7), "full"],
-        selected = dataColumnChoices[12, "full"]
-      ),
-      "Measure B" = selectInput(
-        "measure", "Select the underlying variable",
-        choices = dataColumnChoices[c(24, 13:17), "full"],
-        selected = dataColumnChoices[24, "full"]
-      )
-    )
   })
 
   # create the data for the leaflet map
