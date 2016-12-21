@@ -1,9 +1,12 @@
-header <- dashboardHeader(title = "Local Authority Map")
+header <- dashboardHeader(
+  title = "Employment Prospects"
+)
 
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Information", tabName = "info", icon = icon("info-circle")),
-    menuItem("Hex Map", icon = icon("map-marker"), tabName = "map"),
+    menuItem("Geographical Map", icon = icon("map-marker"), tabName = "mapGeo"),
+    menuItem("Hexagonal Map", icon = icon("map-marker"), tabName = "mapHex"),
     menuItem("Scatter Graph", icon = icon("line-chart"), tabName = "scat"),
     # upload the employment statistics data
     fileInput(
@@ -14,7 +17,6 @@ sidebar <- dashboardSidebar(
 )
 
 body <- dashboardBody(
-  includeCSS("www/custom.css"),
   tabItems(
     # Welcome page content
     tabItem(
@@ -27,44 +29,12 @@ body <- dashboardBody(
       )
     ),
     tabItem(
-      tabName = "map",
-      column(
-        width = 12,
-        box(
-          # offer a choice of statistics
-          width = 6,
-          selectInput(
-            "stat",
-            label = "Select a composite variable",
-            choices = list(
-              "Measure A" = dataColumnChoices[c(12, 5:7), "full"],
-              "Measure B" = dataColumnChoices[c(24, 13:17), "full"]
-            ),
-            selected = dataColumnChoices[12, "full"]
-          )
-        )
-      ),
-      column(
-        width = 12,
-        tabBox(
-          width = 6,
-          selected = "Hex Map",
-          height = 600,
-          tabPanel(
-            "Hex Map",
-            leafletOutput("hexMap", height = 600)
-          ),
-          tabPanel(
-            "Leaf Map",
-            leafletOutput("leafMap", height = 575)
-          )
-        ),
-        box(
-          width = 6,
-          height = 600,
-          dataTableOutput("ladDat")
-        )
-      )
+      tabName = "mapGeo",
+      tags$div(mapPageInput("geo"), class = "tab-pane")
+    ),
+    tabItem(
+      tabName = "mapHex",
+      tags$div(mapPageInput("hex"), class = "tab-pane")
     ),
     tabItem(
       tabName = "scat",
@@ -74,14 +44,14 @@ body <- dashboardBody(
           width = 6,
           height = 600,
           plotOutput("scatFig", height = 600, click = "plot_click")
-        ),
-        box(
-          width = 6,
-          tableOutput("test")
         )
       )
     )
   )
 )
 
-dashboardPage(header, sidebar, body, skin = "black")
+dashboardPage(
+  header,
+  sidebar,
+  body
+)
