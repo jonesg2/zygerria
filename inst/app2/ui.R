@@ -5,7 +5,8 @@ header <- dashboardHeader(
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Information", tabName = "info", icon = icon("info-circle")),
-    menuItem("Map", icon = icon("map-marker"), tabName = "map"),
+    menuItem("Geographical Map", icon = icon("map-marker"), tabName = "mapGeo"),
+    menuItem("Hexagonal Map", icon = icon("map-marker"), tabName = "mapHex"),
     menuItem("Scatter Graph", icon = icon("line-chart"), tabName = "scat"),
     # upload the employment statistics data
     fileInput(
@@ -28,7 +29,7 @@ body <- dashboardBody(
       )
     ),
     tabItem(
-      tabName = "map",
+      tabName = "mapGeo",
       fluidRow(
         column(
           width = 9,
@@ -36,29 +37,52 @@ body <- dashboardBody(
             height = 500,
             width = NULL,
             solidHeader = TRUE,
-            leafletOutput("map", height = 500)
+            leafletOutput("mapGeo", height = 500)
           ),
           box(
             width = NULL,
-            dataTableOutput("ladDat")
+            dataTableOutput("ladDatGeo")
           )
         ),
         column(
           width = 3,
           box(
             width = NULL,
-            radioButtons(
-              "plotType",
-              label = "Choose a plot type",
-              choices = c("Geographical" = "geo", "Hexagonal" = "hex"),
-              selected = "geo",
-              inline = TRUE
+            selectInput(
+              "statGeo",
+              label = "Select a composite variable",
+              choices = list(
+                "Measure A" = dataColumnChoices[c(12, 5:7), "full"],
+                "Measure B" = dataColumnChoices[c(24, 13:17), "full"]
+              ),
+              selected = dataColumnChoices[12, "full"]
             )
+          )
+        )
+      )
+    ),
+    tabItem(
+      tabName = "mapHex",
+      fluidRow(
+        column(
+          width = 9,
+          box(
+            height = 500,
+            width = NULL,
+            solidHeader = TRUE,
+            leafletOutput("mapHex", height = 500)
           ),
           box(
             width = NULL,
+            dataTableOutput("ladDatHex")
+          )
+        ),
+        column(
+          width = 3,
+          box(
+            width = NULL,
             selectInput(
-              "stat",
+              "statHex",
               label = "Select a composite variable",
               choices = list(
                 "Measure A" = dataColumnChoices[c(12, 5:7), "full"],
