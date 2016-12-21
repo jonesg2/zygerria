@@ -1,9 +1,17 @@
-server <- function(input, output){
+server <- function(input, output, session){
+
+#############################################################################
+  ## Load in Data
+
+  # make the csv file path reactive for use in the modules
+  empInput <- reactive({
+    input$employData
+  })
 
   # load in the statistics data
   emp <- reactive({
-    if (is.null(input$employData)) return(NULL)
-    read.csv(input$employData$datapath,
+    if (is.null(empInput())) return(NULL)
+    read.csv(empInput()$datapath,
              stringsAsFactors = FALSE,
              check.names = FALSE) %>%
       mutate(
@@ -15,56 +23,25 @@ server <- function(input, output){
       )
   })
 
-  # extract the short name to match the data
-  short_name_geo <- reactive({
-    dataColumnChoices[dataColumnChoices$full == input$statGeo, "short"]
+  # extract the data column names
+  namesSub <- reactive({
+    colnames(emp())[!(colnames(emp()) %in% c("la_code", "la_name"))]
   })
+
+#############################################################################
+  ## Create the geographical map
 
   # create the data for the leaflet map
   geoData <- reactive({
     createLeafletData(data = emp())
   })
 
-  # calculate the edges of the map
-  geoBounds <- reactive({
-    req(input$employData)
-    bbox(geoData())
-  })
+  # create the leaflet map page
+  callModule(mapPage, "geo", emp = empInput, cols = namesSub,
+             data = geoData, hex = FALSE)
 
-  # render the leaflet map
-  output$mapGeo <- renderLeaflet({
-    validate(
-      need(input$employData, "Please upload employment statistics")
-    )
-    leafMap(
-      mapData = geoData(),
-      fill = short_name_geo(),
-      bounds = geoBounds()
-    )
-  })
-
-  # on a plot click, display the region's data in a table
-  observe({
-    event <- input$mapGeo_shape_click
-    if (is.null(event)) return()
-    output$ladDatGeo <- renderDataTable({
-      selectData <-
-        data.frame(
-          "Statistic" = colnames(geoData()@data)[8:36],
-          "Value" = t(
-            geoData()@data[geoData()@data$la_code %in% event, 8:36]
-          ),
-          stringsAsFactors = FALSE
-        )
-      colnames(selectData) <- c("Statistic", "Value")
-      datatable(selectData, rownames = FALSE)
-    })
-  })
-
-  # extract the short name to match the data
-  short_name_hex <- reactive({
-    dataColumnChoices[dataColumnChoices$full == input$statHex, "short"]
-  })
+#############################################################################
+  ## Create the hexagonal map
 
   # merge the statistics data with the hexagon map data
   hexData <- reactive({
@@ -74,40 +51,12 @@ server <- function(input, output){
     hexMapJson
   })
 
-  hexBounds <- reactive({
-    req(input$employData)
-    bbox(hexData())
-  })
+  # create the hexagon map page
+  callModule(mapPage, "hex", emp = empInput, cols = namesSub,
+             data = hexData, hex = TRUE)
 
-  output$mapHex <- renderLeaflet({
-    validate(
-      need(input$employData, "Please upload employment statistics")
-    )
-    leafMap(
-      mapData = hexData(),
-      fill = short_name_hex(),
-      bounds = hexBounds(),
-      hex = TRUE
-    )
-  })
-
-  # on a plot click, display the region's data in a table
-  observe({
-    event <- input$mapHex_shape_click
-    if (is.null(event)) return()
-    output$ladDatHex <- renderDataTable({
-      selectData <-
-        data.frame(
-          "Statistic" = colnames(geoData()@data)[8:36],
-          "Value" = t(
-            geoData()@data[geoData()@data$la_code %in% event, 8:36]
-          ),
-          stringsAsFactors = FALSE
-        )
-      colnames(selectData) <- c("Statistic", "Value")
-      datatable(selectData, rownames = FALSE)
-    })
-  })
+#############################################################################
+  ## Create the scatter plot
 
   # output the scatter graph
   output$scatFig <- renderPlot({

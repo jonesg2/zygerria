@@ -30,69 +30,11 @@ body <- dashboardBody(
     ),
     tabItem(
       tabName = "mapGeo",
-      fluidRow(
-        column(
-          width = 9,
-          box(
-            height = 500,
-            width = NULL,
-            solidHeader = TRUE,
-            leafletOutput("mapGeo", height = 500)
-          ),
-          box(
-            width = NULL,
-            dataTableOutput("ladDatGeo")
-          )
-        ),
-        column(
-          width = 3,
-          box(
-            width = NULL,
-            selectInput(
-              "statGeo",
-              label = "Select a composite variable",
-              choices = list(
-                "Measure A" = dataColumnChoices[c(12, 5:7), "full"],
-                "Measure B" = dataColumnChoices[c(24, 13:17), "full"]
-              ),
-              selected = dataColumnChoices[12, "full"]
-            )
-          )
-        )
-      )
+      tags$div(mapPageInput("geo"), class = "tab-pane")
     ),
     tabItem(
       tabName = "mapHex",
-      fluidRow(
-        column(
-          width = 9,
-          box(
-            height = 500,
-            width = NULL,
-            solidHeader = TRUE,
-            leafletOutput("mapHex", height = 500)
-          ),
-          box(
-            width = NULL,
-            dataTableOutput("ladDatHex")
-          )
-        ),
-        column(
-          width = 3,
-          box(
-            width = NULL,
-            selectInput(
-              "statHex",
-              label = "Select a composite variable",
-              choices = list(
-                "Measure A" = dataColumnChoices[c(12, 5:7), "full"],
-                "Measure B" = dataColumnChoices[c(24, 13:17), "full"]
-              ),
-              selected = dataColumnChoices[12, "full"]
-            )
-          )
-        )
-      )
+      tags$div(mapPageInput("hex"), class = "tab-pane")
     ),
     tabItem(
       tabName = "scat",
