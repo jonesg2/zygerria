@@ -59,4 +59,23 @@ mapPage <- function(input, output, session, emp, data, cols, hex = TRUE) {
     })
   })
 
+  # reset region selection inputs on a button click
+  observeEvent(input$clearSelection, {
+    updateSelectInput(
+      session,
+      "lad1",
+      choices = c(Choose = "", sort(unique(shape@data$lad15nm)))
+    )
+    updateSelectInput(
+      session,
+      "lad2",
+      choices = c(Choose = "", sort(unique(shape@data$lad15nm)))
+    )
+    updateSelectInput(
+      session,
+      "lad3",
+      choices = c(Choose = "", sort(unique(shape@data$lad15nm)))
+    )
+  })
+
 }
