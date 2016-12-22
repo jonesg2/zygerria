@@ -14,7 +14,7 @@ mapPageInput <- function(id) {
     column(
       width = 9,
       box(
-        height = 500,
+        height = 525,
         width = NULL,
         solidHeader = TRUE,
         leafletOutput(ns("map"), height = 500)
