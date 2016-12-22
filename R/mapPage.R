@@ -22,12 +22,6 @@ mapPage <- function(input, output, session, emp, data, cols, hex = TRUE) {
     dataColumnChoices[dataColumnChoices$full == input$stat, "short"]
   })
 
-  # calculate the edges of the map
-  bounds <- reactive({
-    req(emp())
-    bbox(data())
-  })
-
   # render the leaflet map
   output$map <- renderLeaflet({
     validate(
@@ -36,7 +30,6 @@ mapPage <- function(input, output, session, emp, data, cols, hex = TRUE) {
     leafMap(
       mapData = data(),
       fill = short_name(),
-      bounds = bounds(),
       hex = hex
     )
   })
