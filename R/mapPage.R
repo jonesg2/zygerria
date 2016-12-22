@@ -72,15 +72,22 @@ mapPage <- function(input, output, session, emp, data, cols, hex = TRUE) {
   observe({
     event <- input$lad1 != "" | input$lad2 != "" | input$lad3 != ""
     if (event) {
-      dontshow <- c("lad15cd", "lad15nm", "lad15nmw", "objectid", "st_lengths",
-                    "st_areasha", "la_code")
+      colsToShow <- dataColumnChoices[c(12, 5:7, 24, 13:17), "short"]
+      rowNames <- dataColumnChoices[c(12, 5:7, 24, 13:17), "full"]
       output$dataTable <- renderDataTable({
         subDat <- data()[data()@data$lad15nm %in% c(input$lad1, input$lad2, input$lad3), ]@data
         nmSub <- subDat$lad15nm
-        subDat <- subDat[, !(colnames(subDat) %in% dontshow)]
+        subDat <- subDat[, colnames(subDat) %in% colsToShow]
         subDat <- t(subDat)
         colnames(subDat) <- nmSub
-        datatable(subDat)
+        rownames(subDat) <- rowNames
+        datatable(
+          subDat,
+          options = list(
+            pageLength = 10,
+            dom = "t"
+          )
+        )
       })
     } else {
       return(NULL)
