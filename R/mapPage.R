@@ -38,6 +38,9 @@ mapPage <- function(input, output, session, emp, data, cols, hex = TRUE) {
   proxy <- leafletProxy("map")
 
   observe({
+    validate(
+      need(emp(), "Please upload employment statistics")
+    )
     eventLad1 <- input$lad1 != ""
     if (eventLad1) {
       lad1Dat <- data()[data()@data$lad15nm %in% input$lad1, ]
@@ -48,6 +51,9 @@ mapPage <- function(input, output, session, emp, data, cols, hex = TRUE) {
     }
   })
   observe({
+    validate(
+      need(emp(), "Please upload employment statistics")
+    )
     eventLad2 <- input$lad2 != ""
     if (eventLad2) {
       lad2Dat <- data()[data()@data$lad15nm %in% input$lad2, ]
@@ -58,6 +64,9 @@ mapPage <- function(input, output, session, emp, data, cols, hex = TRUE) {
     }
   })
   observe({
+    validate(
+      need(emp(), "Please upload employment statistics")
+    )
     eventLad3 <- input$lad3 != ""
     if (eventLad3) {
       lad3Dat <- data()[data()@data$lad15nm %in% input$lad3, ]
@@ -75,7 +84,8 @@ mapPage <- function(input, output, session, emp, data, cols, hex = TRUE) {
       colsToShow <- dataColumnChoices[c(12, 5:7, 24, 13:17), "short"]
       rowNames <- dataColumnChoices[c(12, 5:7, 24, 13:17), "full"]
       output$dataTable <- renderDataTable({
-        subDat <- data()[data()@data$lad15nm %in% c(input$lad1, input$lad2, input$lad3), ]@data
+        subDat <- data()[data()@data$lad15nm %in%
+                           c(input$lad1, input$lad2, input$lad3), ]@data
         nmSub <- subDat$lad15nm
         subDat <- subDat[, colnames(subDat) %in% colsToShow]
         subDat <- t(subDat)
