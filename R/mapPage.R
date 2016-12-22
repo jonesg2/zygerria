@@ -68,22 +68,23 @@ mapPage <- function(input, output, session, emp, data, cols, hex = TRUE) {
     }
   })
 
-  # on a plot click, display the region's data in a table
+  # on selection from the drop down menu, display the region's data in a table
   observe({
-    event <- input$map_shape_click
-    if (is.null(event)) return()
-    output$dataTable <- renderDataTable({
-      selectData <-
-        data.frame(
-          "Statistic" = cols(),
-          "Value" = t(
-            data()@data[data()@data$la_code %in% event, cols()]
-          ),
-          stringsAsFactors = FALSE
-        )
-      colnames(selectData) <- c("Statistic", "Value")
-      datatable(selectData, rownames = FALSE)
-    })
+    event <- input$lad1 != "" | input$lad2 != "" | input$lad3 != ""
+    if (event) {
+      dontshow <- c("lad15cd", "lad15nm", "lad15nmw", "objectid", "st_lengths",
+                    "st_areasha", "la_code")
+      output$dataTable <- renderDataTable({
+        subDat <- data()[data()@data$lad15nm %in% c(input$lad1, input$lad2, input$lad3), ]@data
+        nmSub <- subDat$lad15nm
+        subDat <- subDat[, !(colnames(subDat) %in% dontshow)]
+        subDat <- t(subDat)
+        colnames(subDat) <- nmSub
+        datatable(subDat)
+      })
+    } else {
+      return(NULL)
+    }
   })
 
   # reset region selection inputs on a button click
