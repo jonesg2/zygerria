@@ -34,6 +34,40 @@ mapPage <- function(input, output, session, emp, data, cols, hex = TRUE) {
     )
   })
 
+  # on selection of an lad, place a marker on the map
+  proxy <- leafletProxy("map")
+
+  observe({
+    eventLad1 <- input$lad1 != ""
+    if (eventLad1) {
+      lad1Dat <- data()[data()@data$lad15nm %in% input$lad1, ]
+      lad1Dat <- data.frame(lng = lad1Dat@polygons[[1]]@labpt[1],
+                            lat = lad1Dat@polygons[[1]]@labpt[2])
+      proxy %>% addMarkers(lng = ~lng, lat = ~lat, data = lad1Dat,
+                           layerId = "lad1")
+    }
+  })
+  observe({
+    eventLad2 <- input$lad2 != ""
+    if (eventLad2) {
+      lad2Dat <- data()[data()@data$lad15nm %in% input$lad2, ]
+      lad2Dat <- data.frame(lng = lad2Dat@polygons[[1]]@labpt[1],
+                            lat = lad2Dat@polygons[[1]]@labpt[2])
+      proxy %>% addMarkers(lng = ~lng, lat = ~lat, data = lad2Dat,
+                           layerId = "lad2")
+    }
+  })
+  observe({
+    eventLad3 <- input$lad3 != ""
+    if (eventLad3) {
+      lad3Dat <- data()[data()@data$lad15nm %in% input$lad3, ]
+      lad3Dat <- data.frame(lng = lad3Dat@polygons[[1]]@labpt[1],
+                            lat = lad3Dat@polygons[[1]]@labpt[2])
+      proxy %>% addMarkers(lng = ~lng, lat = ~lat, data = lad3Dat,
+                           layerId = "lad3")
+    }
+  })
+
   # on a plot click, display the region's data in a table
   observe({
     event <- input$map_shape_click
