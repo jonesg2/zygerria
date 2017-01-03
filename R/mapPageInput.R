@@ -19,9 +19,13 @@ mapPageInput <- function(id) {
         solidHeader = TRUE,
         leafletOutput(ns("map"), height = 500)
       ),
-      box(
-        width = NULL,
-        dataTableOutput(ns("dataTable"))
+      conditionalPanel(
+        #|| input.lad1 != null || input.lad1 != 0 || input.lad1 != ''
+        condition = "typeof input.lad1.length == 'undefined'",
+        box(
+          width = NULL,
+          dataTableOutput(ns("dataTable"))
+        )
       )
     ),
     column(
