@@ -20,8 +20,9 @@ mapPageInput <- function(id) {
         leafletOutput(ns("map"), height = 500)
       ),
       conditionalPanel(
-        #|| input.lad1 != null || input.lad1 != 0 || input.lad1 != ''
-        condition = "typeof input.lad1.length == 'undefined'",
+        condition = paste0("input['", id, "-lad1'] != '' || ",
+                           "input['", id, "-lad2'] != '' || ",
+                           "input['", id, "-lad3'] != ''"),
         box(
           width = NULL,
           dataTableOutput(ns("dataTable"))
