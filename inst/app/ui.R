@@ -53,5 +53,10 @@ body <- dashboardBody(
 dashboardPage(
   header,
   sidebar,
-  body
+  body,
+  tags$head(
+    tags$link(
+      rel = "stylesheet", type = "text/css", href = "custom.css"
+    )
+  )
 )

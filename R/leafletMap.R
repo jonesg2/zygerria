@@ -89,12 +89,13 @@ leafMap <- function(mapData, fill = NULL, hex = FALSE) {
                   labFormat = labelFormat(suffix = "%"))
     }
   }
-  if (!hex) {
-    map
-  } else {
-    map %>%
-      styleMap()
-  }
+  # if (!hex) {
+  #   map
+  # } else {
+  #   map %>%
+  #     styleMap()
+  # }
+  map
 }
 
 #' Apply a style to a leaflet map

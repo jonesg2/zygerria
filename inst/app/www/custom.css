@@ -10,3 +10,7 @@
 .leaflet-top.leaflet-left {
   z-index: 1;
 }
+
+#hex-map {
+  background-color: #FFFFFF;
+}
