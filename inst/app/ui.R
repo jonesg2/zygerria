@@ -41,9 +41,9 @@ body <- dashboardBody(
       column(
         width = 12,
         box(
-          width = 6,
-          height = 600,
-          plotOutput("scatFig", height = 600, click = "plot_click")
+          width = 12,
+          height = 525,
+          plotlyOutput("scatFig", height = 500)
         )
       )
     )

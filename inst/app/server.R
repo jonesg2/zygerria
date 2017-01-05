@@ -59,11 +59,11 @@ server <- function(input, output, session){
   ## Create the scatter plot
 
   # output the scatter graph
-  output$scatFig <- renderPlot({
+  output$scatFig <- renderPlotly({
     validate(
       need(input$employData, "Please upload employment statistics")
     )
-    compositeScatter(emp(), plotly = FALSE)
+    compositeScatterPlotly(emp())
   })
 
 }
