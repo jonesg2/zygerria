@@ -12,6 +12,7 @@
 #'
 #' @importFrom plotly plot_ly add_trace layout
 #' @importFrom stats setNames
+#' @importFrom dplyr mutate if_else
 #'
 #' @export
 compositeScatter <- function(data) {
@@ -56,10 +57,10 @@ compositeScatter <- function(data) {
       y = ~measure_b,
       color = ~emp_rate_hml,
       symbol = ~emp_rate_hml,
-      text = ~paste(
+      text = ~paste0(
         "Region: ", la_name,
-        "<br>Measure A: ", measure_a,
-        "<br>Measure B: ", measure_b
+        "<br>Measure A: ", measure_a, "%",
+        "<br>Measure B: ", measure_b, "%"
       ),
       hoverinfo = "text",
       marker = list(
