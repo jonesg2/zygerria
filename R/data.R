@@ -27,12 +27,13 @@
 
 #' UK Hex Map Data
 #'
-#' Coordinates for Local Area Districts (LADs) broken down into equally sized
-#' hexagons.
+#' The LAD data and coordinates for Local Area Districts (LADs) broken down into
+#' equally sized hexagons. The data are of class
+#' \code{SpatialPolygonsDataFrame}.
 #'
 #' @docType data
 #'
 #' @usage data(hexMapData)
 #'
-#' @format A \code{data.frame} with 2346 rows and 4 columns.
-"hexMapData"
+#' @format A \code{list} of length 391 - one for each LAD.
+"hexMapJson"
