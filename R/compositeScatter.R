@@ -11,6 +11,7 @@
 #' @author Nathan Eastwood
 #'
 #' @importFrom plotly plot_ly add_trace layout
+#' @importFrom stats setNames
 #'
 #' @export
 compositeScatter <- function(data) {
