@@ -24,11 +24,11 @@ leafMap <- function(mapData, fill = NULL, hex = FALSE) {
       setView(
         mean(bounds[1, ]),
         mean(bounds[2, ]),
-        zoom = 5
-      ) %>%
-      addProviderTiles(
-        "CartoDB.Positron",
-        options = providerTileOptions(minZoom = 4, maxZoom = 8)
+        zoom = 5,
+        options = leafletOptions(
+          minZoom = 4,
+          maxZoom = 8
+        )
       )
   } else {
     leaflet(options = leafletOptions(
