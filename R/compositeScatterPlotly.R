@@ -19,7 +19,7 @@ compositeScatterPlotly <- function(data) {
     mutate(
       emp_rate_hml = if_else(
         emp_rate < 73, "red",
-        if_else(emp_rate >= 73 & emp_rate < 77,
+        if_else(emp_rate >= 73 & emp_rate < 78,
                 "orange",
                 "green"))
     )

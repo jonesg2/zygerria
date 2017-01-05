@@ -13,14 +13,7 @@ server <- function(input, output, session){
     if (is.null(empInput())) return(NULL)
     read.csv(empInput()$datapath,
              stringsAsFactors = FALSE,
-             check.names = FALSE) %>%
-      mutate(
-        emp_rate_hml = if_else(
-          emp_rate < 73, "red",
-          if_else(emp_rate >= 73 & emp_rate < 77,
-                  "orange",
-                  "green"))
-      )
+             check.names = FALSE)
   })
 
   # extract the data column names
