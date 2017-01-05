@@ -33,7 +33,7 @@
 #'
 #' @docType data
 #'
-#' @usage data(hexMapData)
+#' @usage data(hexMapJson)
 #'
 #' @format A \code{list} of length 391 - one for each LAD.
 "hexMapJson"

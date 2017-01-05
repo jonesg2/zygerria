@@ -6,7 +6,7 @@
 \title{UK Hex Map Data}
 \format{A \code{list} of length 391 - one for each LAD.}
 \usage{
-data(hexMapData)
+data(hexMapJson)
 }
 \description{
 The LAD data and coordinates for Local Area Districts (LADs) broken down into
