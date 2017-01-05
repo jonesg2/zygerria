@@ -57,11 +57,11 @@ leafMap <- function(mapData, fill = NULL, hex = FALSE) {
     pal <- if (length(table(mapData@data[, fill])) == 4) {
       domain_min <- min(mapData@data[, fill], na.rm = TRUE)
       domain_max <- max(mapData@data[, fill], na.rm = TRUE)
-      colorFactor("Greens", factor(mapData@data[, fill]))
+      colorFactor("Reds", factor(mapData@data[, fill]))
     } else {
       domain_min <- min(roundDown(mapData@data[, fill]), na.rm = TRUE)
       domain_max <- max(roundUp(mapData@data[, fill]), na.rm = TRUE)
-      colorNumeric("Greens", domain = domain_min:domain_max)
+      colorNumeric("Reds", domain = domain_min:domain_max)
     }
 
     # Add the polygons
