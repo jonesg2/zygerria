@@ -32,12 +32,14 @@ leafMap <- function(mapData, fill = NULL, hex = FALSE) {
       )
   } else {
     leaflet(options = leafletOptions(
-      crs = leafletCRS("L.CRS.Simple"))
+      minZoom = 7,
+      maxZoom = 10
+      )
     ) %>%
       setView(
         mean(bounds[1, ]),
         mean(bounds[2, ]),
-        zoom = 8
+        zoom = 7.5
       )
   }
 
