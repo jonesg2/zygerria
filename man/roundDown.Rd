@@ -6,6 +6,9 @@
 \usage{
 roundDown(x)
 }
+\arguments{
+\item{x}{A vector}
+}
 \description{
 Round down to nearest 10
 }

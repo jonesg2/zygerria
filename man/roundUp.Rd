@@ -6,6 +6,11 @@
 \usage{
 roundUp(x, to = 10)
 }
+\arguments{
+\item{x}{A vector.}
+
+\item{to}{The nearest digit to round up to.}
+}
 \description{
 Round up to nearest number
 }
