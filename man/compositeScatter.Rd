@@ -4,21 +4,17 @@
 \alias{compositeScatter}
 \title{Comparison of Composite Variables}
 \usage{
-compositeScatter(data, plotly = TRUE)
+compositeScatter(data)
 }
 \arguments{
 \item{data}{The employment data, see details for more information.}
-
-\item{plotly}{Logical; defaults to TRUE. Whether to return the plot as an
-interactive plotly graphic or not.}
 }
 \description{
 Create a scatter plot of the composite variables
 }
 \details{
 The \code{data} needs to contain \code{measureA}, \code{measureB} and the
-employment rate statistics, where employment rate is defined as a categorical
-variable; red is <73%, amber is 73-77% and green is >77%.
+employment rate statistics.
 }
 \author{
 Nathan Eastwood
