@@ -56,7 +56,7 @@ server <- function(input, output, session){
     validate(
       need(input$employData, "Please upload employment statistics")
     )
-    compositeScatter(emp())
+    compositeScatter(emp(), x = input$xAxis, y = input$yAxis)
   })
 
 }

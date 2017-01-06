@@ -39,11 +39,29 @@ body <- dashboardBody(
     tabItem(
       tabName = "scat",
       column(
-        width = 12,
+        width = 9,
         box(
-          width = 12,
+          width = NULL,
           height = 525,
           plotlyOutput("scatFig", height = 500)
+        )
+      ),
+      column(
+        width = 3,
+        box(
+          width = NULL,
+          selectInput(
+            "xAxis",
+            label = "Choose the x-axis",
+            choices = dataColumnChoices[c(12, 5:7, 24, 13:17), "short"],
+            selected = "measure_a"
+          ),
+          selectInput(
+            "yAxis",
+            label = "Choose the y-axis",
+            choices = dataColumnChoices[c(12, 5:7, 24, 13:17), "short"],
+            selected = "measure_b"
+          )
         )
       )
     )

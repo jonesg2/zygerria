@@ -3,6 +3,8 @@
 #' Create a scatter plot of the composite variables
 #'
 #' @param data The employment data, see details for more information.
+#' @param x The variable to be plotted on the x-axis.
+#' @param y The variable to be plotted on the y-axis.
 #'
 #' @details
 #' The \code{data} needs to contain \code{measureA}, \code{measureB} and the
@@ -15,7 +17,7 @@
 #' @importFrom dplyr mutate if_else
 #'
 #' @export
-compositeScatter <- function(data) {
+compositeScatter <- function(data, x, y) {
 
   data <- data %>%
     mutate(
@@ -53,14 +55,14 @@ compositeScatter <- function(data) {
       data = data,
       type = "scatter",
       mode = "markers",
-      x = ~measure_a,
-      y = ~measure_b,
+      x = as.formula(paste0("~", x)),
+      y = as.formula(paste0("~", y)),
       color = ~emp_rate_hml,
       symbol = ~emp_rate_hml,
       text = ~paste0(
         "Region: ", la_name,
-        "<br>Measure A: ", measure_a, "%",
-        "<br>Measure B: ", measure_b, "%"
+        "<br>Measure A: ", x, "%",
+        "<br>Measure B: ", y, "%"
       ),
       hoverinfo = "text",
       marker = list(
