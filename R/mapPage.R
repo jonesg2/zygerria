@@ -84,8 +84,9 @@ mapPage <- function(input, output, session, emp, data, cols, hex = TRUE) {
       colsToShow <- dataColumnChoices[c(12, 5:7, 24, 13:17), "short"]
       rowNames <- dataColumnChoices[c(12, 5:7, 24, 13:17), "full"]
       output$dataTable <- renderDataTable({
-        subDat <- data()[data()@data$lad15nm %in%
-                           c(input$lad1, input$lad2, input$lad3), ]@data
+        ins <- c(input$lad1, input$lad2, input$lad3)
+        subDat <- data()[data()@data$lad15nm %in% ins, ]@data
+        subDat <- subDat[order(match(subDat$lad15nm, ins)), ]
         nmSub <- subDat$lad15nm
         subDat <- subDat[, colnames(subDat) %in% colsToShow]
         subDat <- t(subDat)
