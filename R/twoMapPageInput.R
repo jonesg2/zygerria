@@ -11,16 +11,8 @@ twoMapPageInput <- function(id) {
   fluidRow(
     column(
       width = 4,
-      # box(
-      #   height = 525,
-      #   width = 4,
-      #   solidHeader = TRUE,
       leafletOutput(ns("map_geo"), height = 500)
     ),
-    # box(
-    #   height = 525,
-    #   width = 4,
-    #   solidHeader = TRUE,
     column(
       width = 4,
       leafletOutput(ns("map_hex"), height = 500)
