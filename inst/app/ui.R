@@ -5,6 +5,7 @@ header <- dashboardHeader(
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Information", tabName = "info", icon = icon("info-circle")),
+    menuItem("Both Maps", tabName = "maps", icon = icon("map-marker")),
     menuItem("Geographical Map", icon = icon("map-marker"), tabName = "mapGeo"),
     menuItem("Hexagonal Map", icon = icon("map-marker"), tabName = "mapHex"),
     menuItem("Scatter Graph", icon = icon("line-chart"), tabName = "scat"),
@@ -27,6 +28,10 @@ body <- dashboardBody(
           includeMarkdown("welcome.md")
         )
       )
+    ),
+    tabItem(
+      tabName = "maps",
+      tags$div(twoMapPageInput("two"), class = "tab-pane")
     ),
     tabItem(
       tabName = "mapGeo",

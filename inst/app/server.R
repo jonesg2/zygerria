@@ -49,6 +49,13 @@ server <- function(input, output, session){
              data = hexData, hex = TRUE)
 
 #############################################################################
+## Create the page for both maps
+
+  callModule(twoMapPage, "two", emp = empInput, cols = namesSub,
+             geodata = geoData, hexdata = hexData)
+
+
+#############################################################################
   ## Create the scatter plot
 
   # output the scatter graph
