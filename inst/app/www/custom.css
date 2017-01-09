@@ -22,3 +22,7 @@
 .main-header .logo {
   font-size: 11pt;
 }
+
+.leaflet-container .leaflet-control-attribution {
+  font-size: 0px;
+}
