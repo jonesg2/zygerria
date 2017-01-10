@@ -61,8 +61,8 @@ compositeScatter <- function(data, x, y) {
       symbol = ~emp_rate_hml,
       text = ~paste0(
         "Region: ", la_name,
-        "<br>Measure A: ", x, "%",
-        "<br>Measure B: ", y, "%"
+        "<br>Measure A: ", data[, x], "%",
+        "<br>Measure B: ", data[, y], "%"
       ),
       hoverinfo = "text",
       marker = list(

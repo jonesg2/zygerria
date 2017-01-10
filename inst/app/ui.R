@@ -58,14 +58,14 @@ body <- dashboardBody(
           selectInput(
             "xAxis",
             label = "Choose the x-axis",
-            choices = dataColumnChoices[c(12, 5:7, 24, 13:17), "short"],
-            selected = "measure_a"
+            choices = dataColumnChoices[c(12, 5:7, 24, 13:17), "full"],
+            selected = dataColumnChoices[12, "full"]
           ),
           selectInput(
             "yAxis",
             label = "Choose the y-axis",
-            choices = dataColumnChoices[c(12, 5:7, 24, 13:17), "short"],
-            selected = "measure_b"
+            choices = dataColumnChoices[c(12, 5:7, 24, 13:17), "full"],
+            selected = dataColumnChoices[24, "full"]
           )
         )
       )

@@ -63,7 +63,11 @@ server <- function(input, output, session){
     validate(
       need(input$employData, "Please upload employment statistics")
     )
-    compositeScatter(emp(), x = input$xAxis, y = input$yAxis)
+    compositeScatter(
+      emp(),
+      x = dataColumnChoices[dataColumnChoices$full %in% input$xAxis, "short"],
+      y = dataColumnChoices[dataColumnChoices$full %in% input$yAxis, "short"]
+    )
   })
 
 }
