@@ -5,9 +5,9 @@ header <- dashboardHeader(
 sidebar <- dashboardSidebar(
   sidebarMenu(
     menuItem("Information", tabName = "info", icon = icon("info-circle")),
-    menuItem("Both Maps", tabName = "maps", icon = icon("map-marker")),
     menuItem("Geographical Map", icon = icon("map-marker"), tabName = "mapGeo"),
     menuItem("Hexagonal Map", icon = icon("map-marker"), tabName = "mapHex"),
+    menuItem("Dual Maps", tabName = "maps", icon = icon("map-marker")),
     menuItem("Scatter Graph", icon = icon("line-chart"), tabName = "scat"),
     # upload the employment statistics data
     fileInput(
