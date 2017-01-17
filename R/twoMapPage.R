@@ -109,8 +109,12 @@ twoMapPage <- function(input, output, session, emp, geodata, hexdata, cols) {
         subDat <- subDat[order(match(subDat$lad15nm, input$ladSel)), ]
         nmSub <- subDat$lad15nm
         subDat <- subDat[, colnames(subDat) %in% colsToShow]
-        subDat <- t(subDat)
-        colnames(subDat) <- nmSub
+        subDat <- as.data.frame(t(subDat))
+        subDat$measure <- rownames(subDat)
+        subDat <- merge(columnMeans(geodata()[, colsToShow]@data), subDat)
+        subDat <- subDat[match(subDat$measure, colsToShow), ]
+        subDat <- subDat[, !(colnames(subDat) %in% "measure")]
+        colnames(subDat) <- c("National Average", nmSub)
         rownames(subDat) <- rowNames
         datatable(
           subDat,
