@@ -28,23 +28,14 @@ twoMapPageInput <- function(id) {
         ),
         selected = dataColumnChoices[12, "full"]
       ),
-      selectInput(
-        ns("lad1"),
-        label = "LAD 1",
+      selectizeInput(
+        ns("ladSel"),
+        label = "Select up to 5 LADs",
         choices = c(Choose = "", sort(unique(shape@data$lad15nm))),
-        selectize = TRUE
-      ),
-      selectInput(
-        ns("lad2"),
-        label = "LAD 2",
-        choices = c(Choose = "", sort(unique(shape@data$lad15nm))),
-        selectize = TRUE
-      ),
-      selectInput(
-        ns("lad3"),
-        label = "LAD 3",
-        choices = c(Choose = "", sort(unique(shape@data$lad15nm))),
-        selectize = TRUE
+        multiple = TRUE,
+        options = list(
+          maxItems = 5
+        )
       ),
       actionButton(
         ns("clearSelection"),
@@ -55,9 +46,7 @@ twoMapPageInput <- function(id) {
     column(
       width = 8,
       conditionalPanel(
-        condition = paste0("input['", id, "-lad1'] != '' || ",
-                           "input['", id, "-lad2'] != '' || ",
-                           "input['", id, "-lad3'] != ''"),
+        condition = paste0("input['", id, "-ladSel'] != ''"),
         dataTableOutput(ns("dataTable"))
       )
     )
