@@ -123,8 +123,8 @@ twoMapPage <- function(input, output, session, emp, geodata, hexdata, cols) {
   # on selection from the drop down menu, display the region's data in a table
   observe({
     if (!is.null(input$ladSel)) {
-      colsToShow <- dataColumnChoices[c(12, 5:7, 24, 13:17), "short"]
-      rowNames <- dataColumnChoices[c(12, 5:7, 24, 13:17), "full"]
+      colsToShow <- dataColumnChoices[c(12, 5:7, 24, 13:17, 32:54), "short"]
+      rowNames <- dataColumnChoices[c(12, 5:7, 24, 13:17, 32:54), "full"]
       output$dataTable <- renderDataTable({
         subDat <- geodata()[geodata()@data$lad15nm %in% input$ladSel, ]@data
         subDat <- subDat[order(match(subDat$lad15nm, input$ladSel)), ]
@@ -133,14 +133,14 @@ twoMapPage <- function(input, output, session, emp, geodata, hexdata, cols) {
         subDat <- as.data.frame(t(subDat))
         subDat$measure <- rownames(subDat)
         subDat <- merge(columnMeans(geodata()[, colsToShow]@data), subDat)
-        subDat <- subDat[match(subDat$measure, colsToShow), ]
+        subDat <- subDat[match(colsToShow, subDat$measure), ]
         subDat <- subDat[, !(colnames(subDat) %in% "measure")]
         colnames(subDat) <- c("National Average", nmSub)
         rownames(subDat) <- rowNames
         datatable(
           subDat,
           options = list(
-            pageLength = 10,
+            pageLength = 33,
             dom = "t"
           )
         )
