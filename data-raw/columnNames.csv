@@ -49,7 +49,7 @@ international_migration_outflow,International Migration Outflow
 international_migration_net,International Migration Net 
 male_life_expectancy_at_birth,Male life expectancy at birth
 female_life_expectancy_at_birth,Female life expectancy at birth
-male_life_expectancy_at_age 65,Male life expectancy at age 65
-female_life_expectancy_at_age 65,Female life expectancy at age 65
-proportion_of_votes_to_leave_the_eu (%),Proportion of votes to leave the EU (%)
-proportion_of_votes_to_remain_in_the_eu (%),Proportion of votes to remain in the EU (%)
+male_life_expectancy_at_age_65,Male life expectancy at age 65
+female_life_expectancy_at_age_65,Female life expectancy at age 65
+proportion_of_votes_to_leave_the_eu,Proportion of votes to leave the EU (%)
+proportion_of_votes_to_remain_in_the_eu,Proportion of votes to remain in the EU (%)
