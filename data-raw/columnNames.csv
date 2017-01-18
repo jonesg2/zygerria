@@ -30,3 +30,26 @@ skill_upper_mid,"Skill level: by local authority (all ages, in employment), Apri
 skill_lower_mid,"Skill level: by local authority (all ages, in employment), April 2015 to March 2016          Skill level: LOWER MIDDLE"
 skill_low,"Skill level: by local authority (all ages, in employment), April 2015 to March 2016          Skill level: LOW"
 prob_comp,Probability of Computerisation  (Automation Variable)
+est_pop,Estimated Population 2015 (number)
+est_pop_prop,Local authority population as a proportion of Great Britain population (%)
+under_16,Number of persons under 16
+under_16_prop,Proportion of persons under 16
+persons_16_64,Number of persons between 16-64
+persons_16_64_prop,Proportion of persons between 16-64
+persons_65,Number of persons 65+
+persons_65_prop,Proportion of persons 65+
+births,Births
+deaths,Deaths 
+births_minus_deaths,Births minus Deaths 
+internal_migration_inflow,Internal Migration Inflow
+internal_migration_outflow,Internal Migration Outflow
+internal_migration_net,Internal Migration Net
+international_migration_inflow,International Migration Inflow 
+international_migration_outflow,International Migration Outflow 
+international_migration_net,International Migration Net 
+male_life_expectancy_at_birth,Male life expectancy at birth
+female_life_expectancy_at_birth,Female life expectancy at birth
+male_life_expectancy_at_age 65,Male life expectancy at age 65
+female_life_expectancy_at_age 65,Female life expectancy at age 65
+proportion_of_votes_to_leave_the_eu (%),Proportion of votes to leave the EU (%)
+proportion_of_votes_to_remain_in_the_eu (%),Proportion of votes to remain in the EU (%)
