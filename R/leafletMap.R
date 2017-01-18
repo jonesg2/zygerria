@@ -57,7 +57,12 @@ leafMap <- function(mapData, fill = NULL, hex = FALSE) {
     pal <- if (length(table(mapData@data[, fill])) == 4) {
       domain_min <- min(mapData@data[, fill], na.rm = TRUE)
       domain_max <- max(mapData@data[, fill], na.rm = TRUE)
-      colorFactor("Reds", factor(mapData@data[, fill]))
+      colorFactor("RdBu", factor(mapData@data[, fill]))
+    } else if (length(table(mapData@data[, fill])) == 5) {
+      domain_min <- min(mapData@data[, fill], na.rm = TRUE)
+      domain_max <- max(mapData@data[, fill], na.rm = TRUE)
+      colorFactor(c("#EF9C61", "#DD2A2F", "#FFFCB4", "#A4B3C0", "#4575B3"),
+                  factor(mapData@data[, fill]))
     } else {
       domain_min <- min(roundDown(mapData@data[, fill]), na.rm = TRUE)
       domain_max <- max(roundUp(mapData@data[, fill]), na.rm = TRUE)
@@ -72,7 +77,7 @@ leafMap <- function(mapData, fill = NULL, hex = FALSE) {
         weight = 1,
         fillColor = pal(mapData@data[, fill]),
         fillOpacity = 0.8,
-        color = "#BDBDC3",
+        color = "#F5BE29",
         popup = details,
         layerId = mapData$lad15cd,
         highlightOptions = highlightOptions(
@@ -84,6 +89,11 @@ leafMap <- function(mapData, fill = NULL, hex = FALSE) {
       map <-
         map %>%
         addLegend(pal = pal, values = mapData@data[, fill])
+    } else if (length(table(mapData@data[, fill])) == 5) {
+      map <-
+        map %>%
+        addLegend(pal = pal, values = mapData@data[, fill],
+                  labels = unique(mapData@data[, fill]))
     } else {
       map <-
         map %>%

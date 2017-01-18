@@ -16,14 +16,35 @@ twoMapPage <- function(input, output, session, emp, geodata, hexdata, cols) {
     dataColumnChoices[dataColumnChoices$full == input$stat, "short"]
   })
 
+  # update the column selection
+  mapFill <- reactive({
+    if (input$fillType == "quint") {
+      "quints"
+    } else {
+      short_name()
+    }
+  })
+
+  # ensure the geo and hex data have quintile data
+  geoMapData <- reactive({
+    createLeafletData(calculateQuintiles(emp(), short_name()))
+  })
+  hexMapData <- reactive({
+    hexQuints <- calculateQuintiles(emp(), short_name())
+    hexMapJson@data <- dplyr::left_join(
+      hexMapJson@data, hexQuints, by = c("lad15nm" = "la_name")
+    )
+    hexMapJson
+  })
+
   # render the leaflet maps
   output$map_geo <- renderLeaflet({
     validate(
       need(emp(), "Please upload employment statistics")
     )
     leafMap(
-      mapData = geodata(),
-      fill = short_name(),
+      mapData = geoMapData(),
+      fill = mapFill(),
       hex = FALSE
     )
   })
@@ -32,8 +53,8 @@ twoMapPage <- function(input, output, session, emp, geodata, hexdata, cols) {
       need(emp(), "Please upload employment statistics")
     )
     leafMap(
-      mapData = hexdata(),
-      fill = short_name(),
+      mapData = hexMapData(),
+      fill = mapFill(),
       hex = TRUE
     )
   })

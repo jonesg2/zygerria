@@ -30,7 +30,7 @@ server <- function(input, output, session){
   })
 
   # create the leaflet map page
-  callModule(mapPage, "geo", emp = empInput, cols = namesSub,
+  callModule(mapPage, "geo", emp = emp, cols = namesSub,
              data = geoData, hex = FALSE)
 
 #############################################################################
@@ -45,13 +45,13 @@ server <- function(input, output, session){
   })
 
   # create the hexagon map page
-  callModule(mapPage, "hex", emp = empInput, cols = namesSub,
+  callModule(mapPage, "hex", emp = emp, cols = namesSub,
              data = hexData, hex = TRUE)
 
 #############################################################################
 ## Create the page for both maps
 
-  callModule(twoMapPage, "two", emp = empInput, cols = namesSub,
+  callModule(twoMapPage, "two", emp = emp, cols = namesSub,
              geodata = geoData, hexdata = hexData)
 
 

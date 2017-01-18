@@ -28,6 +28,13 @@ twoMapPageInput <- function(id) {
         ),
         selected = dataColumnChoices[12, "full"]
       ),
+      radioButtons(
+        ns("fillType"),
+        label = "Choose a fill type",
+        choices = c("Continuous" = "cont", "Quintiles" = "quint"),
+        selected = "cont",
+        inline = TRUE
+      ),
       selectizeInput(
         ns("ladSel"),
         label = "Select up to 5 LADs",
