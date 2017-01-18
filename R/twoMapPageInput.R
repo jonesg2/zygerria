@@ -31,7 +31,7 @@ twoMapPageInput <- function(id) {
       radioButtons(
         ns("fillType"),
         label = "Choose a fill type",
-        choices = c("Continuous" = "cont", "Quintiles" = "quint"),
+        choices = c("Continuous" = "cont", "Quantiles" = "quint"),
         selected = "cont",
         inline = TRUE
       ),
