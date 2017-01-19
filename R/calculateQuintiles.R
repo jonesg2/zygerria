@@ -38,7 +38,13 @@ calculateQuintiles <- function(data, col) {
         )
       )
     ),
-    ordered = TRUE
+    levels = c(
+      paste0(quints[1], " - ", quints[2] - 0.01),
+      paste0(quints[2], " - ", quints[3] - 0.01),
+      paste0(quints[3], " - ", quints[4] - 0.01),
+      paste0(quints[4], " - ", quints[5] - 0.01),
+      paste0(quints[5], " - ", quints[6])
+    )
   )
   data
 }

@@ -59,9 +59,7 @@ leafMap <- function(mapData, fill = NULL, hex = FALSE) {
       domain_max <- max(mapData@data[, fill], na.rm = TRUE)
       colorFactor("RdBu", factor(mapData@data[, fill]))
     } else if (length(table(mapData@data[, fill])) == 5) {
-      domain_min <- min(mapData@data[, fill], na.rm = TRUE)
-      domain_max <- max(mapData@data[, fill], na.rm = TRUE)
-      colorFactor(c("#EF9C61", "#DD2A2F", "#FFFCB4", "#A4B3C0", "#4575B3"),
+      colorFactor(c("#DD2A2F", "#EF9C61", "#FFFCB4", "#A4B3C0", "#4575B3"),
                   factor(mapData@data[, fill]))
     } else {
       domain_min <- min(roundDown(mapData@data[, fill]), na.rm = TRUE)
