@@ -20,15 +20,16 @@ leafMap <- function(mapData, fill = NULL, hex = FALSE) {
 
   # Create the plot
   map <- if (!hex) {
-    leaflet() %>%
+    leaflet(
+      options = leafletOptions(
+        minZoom = 4,
+        maxZoom = 8
+      )
+    ) %>%
       setView(
         mean(bounds[1, ]),
         mean(bounds[2, ]),
-        zoom = 5,
-        options = leafletOptions(
-          minZoom = 4,
-          maxZoom = 8
-        )
+        zoom = 5
       )
   } else {
     leaflet(options = leafletOptions(
