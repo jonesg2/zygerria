@@ -70,4 +70,14 @@ server <- function(input, output, session){
     )
   })
 
+#############################################################################
+  ## Create the time series plot
+
+  output$timeseries <- renderPlotly({
+    validate(
+      need(input$timeIns, "Please select some LADs")
+    )
+    timeSeriesPlot(emp_time[emp_time$la_name %in% input$timeIns, ],
+                   x = "year", y = "val", color = "la_name")
+  })
 }

@@ -9,6 +9,7 @@ sidebar <- dashboardSidebar(
     menuItem("Hexagonal Map", icon = icon("map-marker"), tabName = "mapHex"),
     menuItem("Dual Maps", tabName = "maps", icon = icon("map-marker")),
     menuItem("Scatter Graph", icon = icon("line-chart"), tabName = "scat"),
+    menuItem("Time Series", icon = icon("line-chart"), tabName = "time"),
     # upload the employment statistics data
     fileInput(
       "employData",
@@ -73,6 +74,30 @@ body <- dashboardBody(
             ),
             selected = dataColumnChoices[24, "full"]
           )
+        )
+      )
+    ),
+    tabItem(
+      tabName = "time",
+      column(
+        width = 9,
+        plotlyOutput("timeseries", height = 500)
+      ),
+      column(
+        width = 3,
+        selectizeInput(
+          "timeIns",
+          label = "Select up to 5 LADs",
+          choices = c(Choose = "", sort(unique(shape@data$lad15nm))),
+          multiple = TRUE,
+          options = list(
+            maxItems = 5
+          )
+        ),
+        selectInput(
+          "timeVar",
+          label = "Select the measure",
+          choices = "val"
         )
       )
     )
