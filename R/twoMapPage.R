@@ -135,15 +135,21 @@ twoMapPage <- function(input, output, session, emp, geodata, hexdata, cols) {
         subDat <- merge(columnMeans(geodata()[, colsToShow]@data), subDat)
         subDat <- subDat[match(colsToShow, subDat$measure), ]
         subDat <- subDat[, !(colnames(subDat) %in% "measure")]
-        colnames(subDat) <- c("National Average", nmSub)
-        rownames(subDat) <- rowNames
-        datatable(
-          subDat,
-          options = list(
-            pageLength = 33,
-            dom = "t"
+        # We need a check for a dataframe here otherwise we get an error when it
+        # tries to set the columns names of something that isn't a dataframe.
+        # I think this is due to the renderDataTable taking precedence over the
+        # observe test
+        if (is.data.frame(subDat)) {
+          colnames(subDat) <- c("National Average", nmSub)
+          rownames(subDat) <- rowNames
+          datatable(
+            subDat,
+            options = list(
+              pageLength = 33,
+              dom = "t"
+            )
           )
-        )
+        }
       })
     } else {
       return(NULL)
