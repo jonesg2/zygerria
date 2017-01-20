@@ -44,7 +44,7 @@
 #'
 #' @docType data
 #'
-#' @usage data{empTime}
+#' @usage data(empTime)
 #'
 #' @format A \code{data.frame} with 1895 rows and 4 columns.
 "empTime"
