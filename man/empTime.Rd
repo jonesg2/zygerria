@@ -6,7 +6,7 @@
 \title{Employment Statistics}
 \format{A \code{data.frame} with 1895 rows and 4 columns.}
 \usage{
-data{emp_time}
+data{empTime}
 }
 \description{
 The employment rates for each LAD from 2012 to 2016.
