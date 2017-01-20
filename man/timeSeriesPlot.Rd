@@ -19,7 +19,7 @@ timeSeriesPlot(data, x, y, color)
 Create a time series plot of employment statistics
 }
 \examples{
-timeSeriesPlot(emp_time, x = "year", y = "val", color = "la_name")
+timeSeriesPlot(empTime, x = "year", y = "val", color = "la_name")
 
 }
 \author{
