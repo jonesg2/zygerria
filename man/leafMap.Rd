@@ -4,7 +4,7 @@
 \alias{leafMap}
 \title{Generate a leaflet map of the UK}
 \usage{
-leafMap(mapData, fill = NULL, hex = FALSE)
+leafMap(mapData, fill = NULL, hex = FALSE, addLegend = TRUE)
 }
 \arguments{
 \item{mapData}{The spatial data.}
@@ -14,6 +14,9 @@ to \code{NULL} in the event a statistics hasn't been provided.}
 
 \item{hex}{Logical; defaults to \code{FALSE}. Whether to generate a hex map
 (\code{TRUE}) or a normal map (\code{FALSE}).}
+
+\item{addLegend}{Logical; defaults to \code{TRUE}. Should a legend be added
+to the map?}
 }
 \description{
 Generate a leaflet map of the UK with polygons for each LAD region filled

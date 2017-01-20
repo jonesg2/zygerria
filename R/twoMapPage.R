@@ -45,7 +45,8 @@ twoMapPage <- function(input, output, session, emp, geodata, hexdata, cols) {
     leafMap(
       mapData = geoMapData(),
       fill = mapFill(),
-      hex = FALSE
+      hex = FALSE,
+      addLegend = FALSE
     )
   })
   output$map_hex <- renderLeaflet({

@@ -8,12 +8,14 @@
 #'   to \code{NULL} in the event a statistics hasn't been provided.
 #' @param hex Logical; defaults to \code{FALSE}. Whether to generate a hex map
 #'   (\code{TRUE}) or a normal map (\code{FALSE}).
+#' @param addLegend Logical; defaults to \code{TRUE}. Should a legend be added
+#'   to the map?
 #'
 #' @author Nathan Eastwood
 #'
 #' @import leaflet
 #' @export
-leafMap <- function(mapData, fill = NULL, hex = FALSE) {
+leafMap <- function(mapData, fill = NULL, hex = FALSE, addLegend = TRUE) {
 
   # Extract the map bounds
   bounds <- mapData@bbox
@@ -84,20 +86,22 @@ leafMap <- function(mapData, fill = NULL, hex = FALSE) {
           weight = 2
         )
       )
-    if (length(table(mapData@data[, fill])) == 4) {
-      map <-
-        map %>%
-        addLegend(pal = pal, values = mapData@data[, fill])
-    } else if (length(table(mapData@data[, fill])) == 5) {
-      map <-
-        map %>%
-        addLegend(pal = pal, values = mapData@data[, fill],
-                  labels = unique(mapData@data[, fill]))
-    } else {
-      map <-
-        map %>%
-        addLegend(pal = pal, values = mapData@data[, fill],
-                  labFormat = labelFormat(suffix = "%"))
+    if (addLegend) {
+      if (length(table(mapData@data[, fill])) == 4) {
+        map <-
+          map %>%
+          addLegend(pal = pal, values = mapData@data[, fill])
+      } else if (length(table(mapData@data[, fill])) == 5) {
+        map <-
+          map %>%
+          addLegend(pal = pal, values = mapData@data[, fill],
+                    labels = unique(mapData@data[, fill]))
+      } else {
+        map <-
+          map %>%
+          addLegend(pal = pal, values = mapData@data[, fill],
+                    labFormat = labelFormat(suffix = "%"))
+      }
     }
   }
   # if (!hex) {
