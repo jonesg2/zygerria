@@ -90,34 +90,44 @@ twoMapPage <- function(input, output, session, emp, geodata, hexdata, cols) {
   })
 
   # Geographical Map
-  observe({
+  observeEvent({
+    input$stat
+    markerDatGeo()
+    input$fillType
+  }, {
     validate(
       need(emp(), "Please upload employment statistics")
     )
-    if (!is.null(input$ladSel)) {
-      if (length(input$ladSel) > 0) {
-        proxy_geo %>%
-          removeMarkerCluster("lad_geo")
-      }
-      proxy_geo %>%
+    p_geo <- proxy_geo %>%
+      clearMarkerClusters() %>%
+      clearMarkers()
+    if (length(input$ladSel) > 0) {
+      p_geo <-
+        p_geo %>%
         addMarkers(lng = ~lng, lat = ~lat, data = markerDatGeo(),
                    clusterId = "lad_geo")
     }
+    p_geo
   })
   # Hex Map
-  observe({
+  observeEvent({
+    input$stat
+    markerDatHex()
+    input$fillType
+  }, {
     validate(
       need(emp(), "Please upload employment statistics")
     )
-    if (!is.null(input$ladSel)) {
-      if (length(input$ladSel) > 0) {
-        proxy_hex %>%
-          removeMarkerCluster("lad_hex")
-      }
-      proxy_hex %>%
+    p_hex <- proxy_hex %>%
+      clearMarkerClusters() %>%
+      clearMarkers()
+    if (length(input$ladSel) > 0) {
+      p_hex <-
+        p_hex %>%
         addMarkers(lng = ~lng, lat = ~lat, data = markerDatHex(),
                    clusterId = "lad_hex")
     }
+    p_hex
   })
 
   # on selection from the drop down menu, display the region's data in a table
