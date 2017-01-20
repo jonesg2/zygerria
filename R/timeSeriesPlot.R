@@ -10,7 +10,7 @@
 #' @author Nathan Eastwood
 #'
 #' @examples
-#' timeSeriesPlot(emp_time, x = "year", y = "val", color = "la_name")
+#' timeSeriesPlot(empTime, x = "year", y = "val", color = "la_name")
 #'
 #' @importFrom plotly plot_ly add_trace layout
 #'

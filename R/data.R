@@ -37,3 +37,14 @@
 #'
 #' @format A \code{list} of length 391 - one for each LAD.
 "hexMapJson"
+
+#' Employment Statistics
+#'
+#' The employment rates for each LAD from 2012 to 2016.
+#'
+#' @docType data
+#'
+#' @usage data{emp_time}
+#'
+#' @format A \code{data.frame} with 1895 rows and 4 columns.
+"empTime"

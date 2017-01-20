@@ -61,7 +61,7 @@ server <- function(input, output, session){
     validate(
       need(input$timeIns, "Please select some LADs")
     )
-    timeSeriesPlot(emp_time[emp_time$la_name %in% input$timeIns, ],
+    timeSeriesPlot(empTime[empTime$la_name %in% input$timeIns, ],
                    x = "year", y = "val", color = "la_name")
   })
 }
