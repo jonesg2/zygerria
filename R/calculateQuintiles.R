@@ -10,6 +10,8 @@
 #'
 #' @author Nathan Eastwood
 #'
+#' @importFrom stats quantile as.formula
+#'
 #' @export
 calculateQuintiles <- function(data, col) {
   quints <- c(
