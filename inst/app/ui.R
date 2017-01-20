@@ -97,7 +97,7 @@ body <- dashboardBody(
         selectInput(
           "timeVar",
           label = "Select the measure",
-          choices = "val"
+          choices = "Employment rate (%)"
         )
       )
     )
