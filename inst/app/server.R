@@ -22,20 +22,12 @@ server <- function(input, output, session){
   })
 
 #############################################################################
-  ## Create the geographical map
+## Create the page for both maps
 
   # create the data for the leaflet map
   geoData <- reactive({
     createLeafletData(data = emp())
   })
-
-  # create the leaflet map page
-  callModule(mapPage, "geo", emp = emp, cols = namesSub,
-             data = geoData, hex = FALSE)
-
-#############################################################################
-  ## Create the hexagonal map
-
   # merge the statistics data with the hexagon map data
   hexData <- reactive({
     hexMapJson@data <- dplyr::left_join(
@@ -43,14 +35,6 @@ server <- function(input, output, session){
     )
     hexMapJson
   })
-
-  # create the hexagon map page
-  callModule(mapPage, "hex", emp = emp, cols = namesSub,
-             data = hexData, hex = TRUE)
-
-#############################################################################
-## Create the page for both maps
-
   callModule(twoMapPage, "two", emp = emp, cols = namesSub,
              geodata = geoData, hexdata = hexData)
 
