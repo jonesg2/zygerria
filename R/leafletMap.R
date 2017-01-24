@@ -49,12 +49,12 @@ leafMap <- function(mapData, fill = NULL, hex = FALSE, addLegend = TRUE) {
   # If a specific statistic is selected, generate the polygons layer for it
   if (!is.null(fill)) {
     # Generate the popup details
-    details <- paste0(
-      "<strong>LAD: </strong>",
-      mapData@data$lad15nm,
-      "<br><strong>", fill, ": </strong>",
-      mapData@data[, fill]
-    )
+    # details <- paste0(
+    #   "<strong>LAD: </strong>",
+    #   mapData@data$lad15nm,
+    #   "<br><strong>", fill, ": </strong>",
+    #   mapData@data[, fill]
+    # )
 
     # Generate a colour palette
     pal <- if (length(table(mapData@data[, fill])) == 4) {
@@ -79,7 +79,7 @@ leafMap <- function(mapData, fill = NULL, hex = FALSE, addLegend = TRUE) {
         fillColor = pal(mapData@data[, fill]),
         fillOpacity = 0.8,
         color = "#F5BE29",
-        popup = details,
+        # popup = details,
         layerId = mapData$lad15cd,
         highlightOptions = highlightOptions(
           color = "#4E0388",

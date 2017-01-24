@@ -186,8 +186,6 @@ twoMapPage <- function(input, output, session, emp, geodata, hexdata, cols) {
     output$ladInfo <- renderUI({
       point <- as.data.frame(input$map_geo_shape_mouseover)
       info <- geodata()[geodata()@data$lad15cd %in% point$id, ]@data
-      fullName <- dataColumnChoices[dataColumnChoices$full == input$stat,
-                                    "full"]
       tagList(
         br(),
         valueBox(
@@ -197,6 +195,16 @@ twoMapPage <- function(input, output, session, emp, geodata, hexdata, cols) {
         )
       )
     })
+  })
+
+  observeEvent(input$map_geo_shape_click, {
+    print(input$ladSel)
+    updateSelectizeInput(
+      session,
+      "ladSel",
+      choices = sort(unique(shape@data$lad15nm)),
+      selected = c(input$ladSel, shape@data[shape@data$lad15cd %in% input$map_geo_shape_click$id, ])
+    )
   })
 
 }
