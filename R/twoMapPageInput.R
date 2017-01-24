@@ -48,7 +48,8 @@ twoMapPageInput <- function(id) {
         ns("clearSelection"),
         "Clear Selection(s)",
         icon = icon("trash-o")
-      )
+      ),
+      uiOutput(ns("ladInfo"))
     ),
     column(
       width = 8,

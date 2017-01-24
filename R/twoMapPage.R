@@ -182,4 +182,21 @@ twoMapPage <- function(input, output, session, emp, geodata, hexdata, cols) {
     }
   })
 
+  observeEvent(input$map_geo_shape_mouseover, {
+    output$ladInfo <- renderUI({
+      point <- as.data.frame(input$map_geo_shape_mouseover)
+      info <- geodata()[geodata()@data$lad15cd %in% point$id, ]@data
+      fullName <- dataColumnChoices[dataColumnChoices$full == input$stat,
+                                    "full"]
+      tagList(
+        br(),
+        valueBox(
+          value = info[, short_name()],
+          subtitle = info[, "lad15nm"],
+          width = NULL
+        )
+      )
+    })
+  })
+
 }
