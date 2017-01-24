@@ -197,13 +197,21 @@ twoMapPage <- function(input, output, session, emp, geodata, hexdata, cols) {
     })
   })
 
+  # Populate the select input when a region on the map is selected
   observeEvent(input$map_geo_shape_click, {
-    print(input$ladSel)
     updateSelectizeInput(
       session,
       "ladSel",
       choices = sort(unique(shape@data$lad15nm)),
       selected = c(input$ladSel, shape@data[shape@data$lad15cd %in% input$map_geo_shape_click$id, ])
+    )
+  })
+  observeEvent(input$map_hex_shape_click, {
+    updateSelectizeInput(
+      session,
+      "ladSel",
+      choices = sort(unique(shape@data$lad15nm)),
+      selected = c(input$ladSel, shape@data[shape@data$lad15cd %in% input$map_hex_shape_click$id, ])
     )
   })
 
