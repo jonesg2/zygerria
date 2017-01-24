@@ -182,9 +182,24 @@ twoMapPage <- function(input, output, session, emp, geodata, hexdata, cols) {
     }
   })
 
+  # easily identify a region by hovering over it
   observeEvent(input$map_geo_shape_mouseover, {
     output$ladInfo <- renderUI({
       point <- as.data.frame(input$map_geo_shape_mouseover)
+      info <- geodata()[geodata()@data$lad15cd %in% point$id, ]@data
+      tagList(
+        br(),
+        valueBox(
+          value = info[, short_name()],
+          subtitle = info[, "lad15nm"],
+          width = NULL
+        )
+      )
+    })
+  })
+  observeEvent(input$map_hex_shape_mouseover, {
+    output$ladInfo <- renderUI({
+      point <- as.data.frame(input$map_hex_shape_mouseover)
       info <- geodata()[geodata()@data$lad15cd %in% point$id, ]@data
       tagList(
         br(),
