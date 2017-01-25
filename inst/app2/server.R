@@ -77,13 +77,13 @@ server <- function(input, output, session) {
   # Map Two
   mapTwoData <- reactive({
     if (input[["mapTwoChoices-mapType"]] == "hex") {
-      hexQuints <- calculateQuintiles(emp(), shortNameOne())
+      hexQuints <- calculateQuintiles(emp(), shortNameTwo())
       hexMapJson@data <- dplyr::left_join(
         hexMapJson@data, hexQuints, by = c("lad15nm" = "la_name")
       )
       hexMapJson
     } else {
-      createLeafletData(calculateQuintiles(emp(), shortNameOne()))
+      createLeafletData(calculateQuintiles(emp(), shortNameTwo()))
     }
   })
   mapTwoType <- reactive({
@@ -108,6 +108,61 @@ server <- function(input, output, session) {
     fill = mapTwoFill,
     hex = mapTwoType
   )
+
+  #############################################################################
+  ## Add marker events to the maps
+
+  mapOneProxy <- leafletProxy("mapOne-map")
+
+  mapOneMarkers <- reactive({
+    markerData(mapOneData(), input$ladSel)
+  })
+
+  observeEvent({
+    input[["mapOneChoices-stat"]]
+    mapOneMarkers()
+    input[["mapOneChoices-fillType"]]
+  }, {
+    validate(
+      need(emp(), "Please upload employment statistics")
+    )
+    ladOne <- mapOneProxy %>%
+      clearMarkerClusters() %>%
+      clearMarkers()
+    if (length(input$ladSel) > 0) {
+      ladOne <-
+        ladOne %>%
+        addMarkers(lng = ~lng, lat = ~lat, data = mapOneMarkers(),
+                   clusterId = "ladOne")
+    }
+    ladOne
+  })
+
+  mapTwoProxy <- leafletProxy("mapTwo-map")
+
+  mapTwoMarkers <- reactive({
+    markerData(mapTwoData(), input$ladSel)
+  })
+
+  observeEvent({
+    input[["mapTwoChoices-stat"]]
+    mapTwoMarkers()
+    input[["mapTwoChoices-fillType"]]
+  }, {
+    validate(
+      need(emp(), "Please upload employment statistics")
+    )
+    ladTwo <- mapTwoProxy %>%
+      clearMarkerClusters() %>%
+      clearMarkers()
+    if (length(input$ladSel) > 0) {
+      ladTwo <-
+        ladTwo %>%
+        addMarkers(lng = ~lng, lat = ~lat, data = mapTwoMarkers(),
+                   clusterId = "ladTwo")
+    }
+    ladTwo
+  })
 
   #############################################################################
   ## Clear the select inputs

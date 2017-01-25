@@ -67,7 +67,7 @@ leafMap <- function(mapData, fill = NULL, hex = FALSE, addLegend = TRUE) {
     } else {
       domain_min <- min(roundDown(mapData@data[, fill]), na.rm = TRUE)
       domain_max <- max(roundUp(mapData@data[, fill]), na.rm = TRUE)
-      colorNumeric("Reds", domain = domain_min:domain_max)
+      colorNumeric("YlOrRd", domain = domain_min:domain_max)
     }
 
     # Add the polygons

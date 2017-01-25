@@ -92,5 +92,8 @@ ui <- navbarPage(
       )
     )
   ),
-  theme = shinytheme("flatly")
+  theme = shinytheme("flatly"),
+  tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
+  )
 )
