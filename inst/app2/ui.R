@@ -43,6 +43,7 @@ ui <- navbarPage(
       tags$div(appMapInput("mapOne"), class = "tab-pane"),
       tags$div(appMapInput("mapTwo"), class = "tab-pane")
     ),
+    br(),
     fluidRow(
       column(
         width = 6,

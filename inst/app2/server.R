@@ -247,8 +247,9 @@ server <- function(input, output, session) {
           datatable(
             subDat,
             options = list(
-              pageLength = 33,
-              dom = "t"
+              pageLength = 10,
+              lengthMenu = c(10, 20, 30, 40),
+              dom = "tlp"
             )
           )
         }
