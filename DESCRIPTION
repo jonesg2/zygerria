@@ -24,6 +24,7 @@ Imports:
     rgdal,
     shiny,
     shinydashboard,
+    shinythemes,
     sp,
     xml2
 Encoding: UTF-8

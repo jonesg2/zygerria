@@ -3,19 +3,6 @@ server <- function(input, output, session) {
   #############################################################################
   ## Load in Data
 
-  # make the csv file path reactive for use in the modules
-  empInput <- reactive({
-    input$employData
-  })
-
-  # load in the statistics data
-  emp <- reactive({
-    if (is.null(empInput())) return(NULL)
-    read.csv(empInput()$datapath,
-             stringsAsFactors = FALSE,
-             check.names = FALSE)
-  })
-
   # extract the short name to match the data
   shortNameOne <- reactive({
     dataColumnChoices[dataColumnChoices$full == input[["mapOneChoices-stat"]], "short"]
@@ -26,12 +13,12 @@ server <- function(input, output, session) {
 
   # create the leaflet and hex datasets
   geoData <- reactive({
-    createLeafletData(data = emp())
+    createLeafletData(data = emp)
   })
   # merge the statistics data with the hexagon map data
   hexData <- reactive({
     hexMapJson@data <- dplyr::left_join(
-      hexMapJson@data, emp(), by = c("lad15nm" = "la_name")
+      hexMapJson@data, emp, by = c("lad15nm" = "la_name")
     )
     hexMapJson
   })
@@ -42,13 +29,13 @@ server <- function(input, output, session) {
   # Map One
   mapOneData <- reactive({
     if (input[["mapOneChoices-mapType"]] == "hex") {
-      hexQuints <- calculateQuintiles(emp(), shortNameOne())
+      hexQuints <- calculateQuintiles(emp, shortNameOne())
       hexMapJson@data <- dplyr::left_join(
         hexMapJson@data, hexQuints, by = c("lad15nm" = "la_name")
       )
       hexMapJson
     } else {
-      createLeafletData(calculateQuintiles(emp(), shortNameOne()))
+      createLeafletData(calculateQuintiles(emp, shortNameOne()))
     }
   })
   mapOneType <- reactive({
@@ -77,13 +64,13 @@ server <- function(input, output, session) {
   # Map Two
   mapTwoData <- reactive({
     if (input[["mapTwoChoices-mapType"]] == "hex") {
-      hexQuints <- calculateQuintiles(emp(), shortNameTwo())
+      hexQuints <- calculateQuintiles(emp, shortNameTwo())
       hexMapJson@data <- dplyr::left_join(
         hexMapJson@data, hexQuints, by = c("lad15nm" = "la_name")
       )
       hexMapJson
     } else {
-      createLeafletData(calculateQuintiles(emp(), shortNameTwo()))
+      createLeafletData(calculateQuintiles(emp, shortNameTwo()))
     }
   })
   mapTwoType <- reactive({
@@ -115,7 +102,7 @@ server <- function(input, output, session) {
   mapOneProxy <- leafletProxy("mapOne-map")
 
   mapOneMarkers <- reactive({
-    markerData(mapOneData(), input$ladSel)
+    markerData(mapOneData(), input[["ladSel"]])
   })
 
   observeEvent({
@@ -123,13 +110,10 @@ server <- function(input, output, session) {
     mapOneMarkers()
     input[["mapOneChoices-fillType"]]
   }, {
-    validate(
-      need(emp(), "Please upload employment statistics")
-    )
     ladOne <- mapOneProxy %>%
       clearMarkerClusters() %>%
       clearMarkers()
-    if (length(input$ladSel) > 0) {
+    if (length(input[["ladSel"]]) > 0) {
       ladOne <-
         ladOne %>%
         addMarkers(lng = ~lng, lat = ~lat, data = mapOneMarkers(),
@@ -141,7 +125,7 @@ server <- function(input, output, session) {
   mapTwoProxy <- leafletProxy("mapTwo-map")
 
   mapTwoMarkers <- reactive({
-    markerData(mapTwoData(), input$ladSel)
+    markerData(mapTwoData(), input[["ladSel"]])
   })
 
   observeEvent({
@@ -149,13 +133,10 @@ server <- function(input, output, session) {
     mapTwoMarkers()
     input[["mapTwoChoices-fillType"]]
   }, {
-    validate(
-      need(emp(), "Please upload employment statistics")
-    )
     ladTwo <- mapTwoProxy %>%
       clearMarkerClusters() %>%
       clearMarkers()
-    if (length(input$ladSel) > 0) {
+    if (length(input[["ladSel"]]) > 0) {
       ladTwo <-
         ladTwo %>%
         addMarkers(lng = ~lng, lat = ~lat, data = mapTwoMarkers(),
@@ -169,7 +150,7 @@ server <- function(input, output, session) {
 
   # reset region selection inputs on a button click
   observeEvent(input$clearSelection, {
-    if (!is.null(input$ladSel)) {
+    if (!is.null(input[["ladSel"]])) {
       updateSelectizeInput(
         session,
         "ladSel",
@@ -187,7 +168,7 @@ server <- function(input, output, session) {
       "ladSel",
       choices = sort(unique(shape@data$lad15nm)),
       selected = c(
-        input$ladSel,
+        input[["ladSel"]],
         shape@data[shape@data$lad15cd %in% input[["mapOne-map_shape_click"]]$id, ]
       )
     )
@@ -198,7 +179,7 @@ server <- function(input, output, session) {
       "ladSel",
       choices = sort(unique(shape@data$lad15nm)),
       selected = c(
-        input$ladSel,
+        input[["ladSel"]],
         shape@data[shape@data$lad15cd %in% input[["mapTwo-map_shape_click"]]$id, ]
       )
     )
@@ -209,11 +190,8 @@ server <- function(input, output, session) {
 
   # output the scatter graph
   output$scatFig <- renderPlotly({
-    validate(
-      need(input$employData, "Please upload employment statistics")
-    )
     compositeScatter(
-      emp(),
+      emp,
       x = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "short"],
       y = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "short"]
     )
@@ -224,12 +202,12 @@ server <- function(input, output, session) {
 
   # on selection from the drop down menu, display the region's data in a table
   observe({
-    if (!is.null(input$ladSel)) {
+    if (!is.null(input[["ladSel"]])) {
       colsToShow <- dataColumnChoices[c(12, 5:7, 24, 13:17, 32:54), "short"]
       rowNames <- dataColumnChoices[c(12, 5:7, 24, 13:17, 32:54), "full"]
       output$dataTable <- renderDataTable({
-        subDat <- geoData()[geoData()@data$lad15nm %in% input$ladSel, ]@data
-        subDat <- subDat[order(match(subDat$lad15nm, input$ladSel)), ]
+        subDat <- geoData()[geoData()@data$lad15nm %in% input[["ladSel"]], ]@data
+        subDat <- subDat[order(match(subDat$lad15nm, input[["ladSel"]])), ]
         nmSub <- subDat$lad15nm
         subDat <- subDat[, colnames(subDat) %in% colsToShow]
         subDat <- as.data.frame(t(subDat))

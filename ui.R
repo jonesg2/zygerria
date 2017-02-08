@@ -15,7 +15,7 @@ ui <- navbarPage(
       tags$div(mapChoicesUI("mapOneChoices"), class = "tab-pane"),
       tags$div(mapChoicesUI("mapTwoChoices"), class = "tab-pane"),
       column(
-        width = 3,
+        width = 6,
         selectizeInput(
           "ladSel",
           label = "Select up to 5 LADs",
@@ -29,13 +29,6 @@ ui <- navbarPage(
           "clearSelection",
           "Clear Selection(s)",
           icon = icon("trash-o")
-        )
-      ),
-      column(
-        width = 3,
-        fileInput(
-          "employData",
-          label = "Upload the employment data"
         )
       )
     ),
@@ -57,7 +50,7 @@ ui <- navbarPage(
         box(
           width = NULL,
           conditionalPanel(
-            condition = "input$ladSel != ''",
+            condition = "input[['ladSel']] != ''",
             dataTableOutput("dataTable")
           )
         )
@@ -93,8 +86,6 @@ ui <- navbarPage(
       )
     )
   ),
-  theme = shinytheme("flatly"),
-  tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
-  )
+  theme = shinythemes::shinytheme("flatly"),
+  includeCSS("custom.css")
 )
