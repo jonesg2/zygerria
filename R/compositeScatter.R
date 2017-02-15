@@ -31,21 +31,31 @@ compositeScatter <- function(data, x, y) {
   pal <- c("green3", "#FFC200", "red")
   pal <- setNames(pal, c("green", "orange", "red"))
 
+  # Calculate the coordinates for the graph lines
+  minH <- min(roundDown(data[, x]), na.rm = TRUE)
+  maxH <- max(roundUp(data[, x]), na.rm = TRUE)
+  horizontalLine <- c(minH, maxH)
+  midX <- c(median(horizontalLine), median(horizontalLine))
+  minV <- min(roundDown(data[, y]), na.rm = TRUE)
+  maxV <- max(roundUp(data[, y]), na.rm = TRUE)
+  verticalLine <- c(minV, maxV)
+  midY <- c(median(verticalLine), median(verticalLine))
+
   p <- plotly::plot_ly(
     symbols = c("circle", "x", "o"),
     colors = pal
   ) %>%
     plotly::add_trace(
-      x = c(0, 100),
-      y = c(50, 50),
+      x = horizontalLine,
+      y = midY,
       type = "scatter",
       mode = "lines",
       color = I("grey51"),
       showlegend = FALSE
     ) %>%
     plotly::add_trace(
-      x = c(50, 50),
-      y = c(0, 100),
+      x = midX,
+      y = verticalLine,
       type = "scatter",
       mode = "lines",
       color = I("grey51"),
