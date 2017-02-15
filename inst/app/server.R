@@ -50,7 +50,11 @@ server <- function(input, output, session){
     compositeScatter(
       emp(),
       x = dataColumnChoices[dataColumnChoices$full %in% input$xAxis, "short"],
-      y = dataColumnChoices[dataColumnChoices$full %in% input$yAxis, "short"]
+      y = dataColumnChoices[dataColumnChoices$full %in% input$yAxis, "short"],
+      xLab = dataColumnChoices[dataColumnChoices$full %in%
+                                 input[["mapOneChoices-stat"]], "full"],
+      yLab = dataColumnChoices[dataColumnChoices$full %in%
+                                 input[["mapTwoChoices-stat"]], "full"]
     )
   })
 

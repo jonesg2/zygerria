@@ -5,6 +5,8 @@
 #' @param data The employment data, see details for more information.
 #' @param x The variable to be plotted on the x-axis.
 #' @param y The variable to be plotted on the y-axis.
+#' @param xLab The x-axis label.
+#' @param yLab The y-axis label.
 #'
 #' @details
 #' The \code{data} needs to contain \code{measureA}, \code{measureB} and the
@@ -17,7 +19,7 @@
 #' @importFrom dplyr mutate if_else
 #'
 #' @export
-compositeScatter <- function(data, x, y) {
+compositeScatter <- function(data, x, y, xLab, yLab) {
 
   data <- data %>%
     mutate(
@@ -80,8 +82,8 @@ compositeScatter <- function(data, x, y) {
       )
     ) %>%
     plotly::layout(
-      xaxis = list(title = "Fragility of Current Jobs"),
-      yaxis = list(title = "Conditions for Future Jobs Growth"),
+      xaxis = list(title = xLab),
+      yaxis = list(title = yLab),
       legend = list(x = 100, y = 0.5)
     )
 
