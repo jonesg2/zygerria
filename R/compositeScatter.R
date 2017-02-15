@@ -34,13 +34,11 @@ compositeScatter <- function(data, x, y, xLab, yLab) {
   pal <- setNames(pal, c("green", "orange", "red"))
 
   # Calculate the coordinates for the graph lines
-  minH <- min(roundDown(data[, x]), na.rm = TRUE)
-  maxH <- max(roundUp(data[, x]), na.rm = TRUE)
-  horizontalLine <- c(minH, maxH)
+  maxH <- max(data[, x], na.rm = TRUE)
+  horizontalLine <- c(0, maxH)
   midX <- c(median(horizontalLine), median(horizontalLine))
-  minV <- min(roundDown(data[, y]), na.rm = TRUE)
-  maxV <- max(roundUp(data[, y]), na.rm = TRUE)
-  verticalLine <- c(minV, maxV)
+  maxV <- max(data[, y], na.rm = TRUE)
+  verticalLine <- c(0, maxV)
   midY <- c(median(verticalLine), median(verticalLine))
 
   p <- plotly::plot_ly(
@@ -73,8 +71,8 @@ compositeScatter <- function(data, x, y, xLab, yLab) {
       symbol = ~emp_rate_hml,
       text = ~paste0(
         "Region: ", la_name,
-        "<br>Measure A: ", data[, x], "%",
-        "<br>Measure B: ", data[, y], "%"
+        "<br>x: ", data[, x], "%",
+        "<br>y: ", data[, y], "%"
       ),
       hoverinfo = "text",
       marker = list(
