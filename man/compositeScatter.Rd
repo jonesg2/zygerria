@@ -4,7 +4,7 @@
 \alias{compositeScatter}
 \title{Comparison of Composite Variables}
 \usage{
-compositeScatter(data, x, y, xLab, yLab)
+compositeScatter(data, x, y, colour, xLab, yLab, highlight = NULL)
 }
 \arguments{
 \item{data}{The employment data, see details for more information.}
@@ -13,9 +13,13 @@ compositeScatter(data, x, y, xLab, yLab)
 
 \item{y}{The variable to be plotted on the y-axis.}
 
+\item{colour}{The column to colour the points by.}
+
 \item{xLab}{The x-axis label.}
 
 \item{yLab}{The y-axis label.}
+
+\item{highlight}{A vector of Local Authority District names to highlight on the plot.}
 }
 \description{
 Create a scatter plot of the composite variables

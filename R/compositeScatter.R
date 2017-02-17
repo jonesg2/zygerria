@@ -5,8 +5,10 @@
 #' @param data The employment data, see details for more information.
 #' @param x The variable to be plotted on the x-axis.
 #' @param y The variable to be plotted on the y-axis.
+#' @param colour The column to colour the points by.
 #' @param xLab The x-axis label.
 #' @param yLab The y-axis label.
+#' @param highlight A vector of Local Authority District names to highlight on the plot.
 #'
 #' @details
 #' The \code{data} needs to contain \code{measureA}, \code{measureB} and the
@@ -19,19 +21,9 @@
 #' @importFrom dplyr mutate if_else
 #'
 #' @export
-compositeScatter <- function(data, x, y, xLab, yLab) {
+compositeScatter <- function(data, x, y, colour, xLab, yLab, highlight = NULL) {
 
-  data <- data %>%
-    mutate(
-      emp_rate_hml = if_else(
-        emp_rate < 73, "red",
-        if_else(emp_rate >= 73 & emp_rate < 78,
-                "orange",
-                "green"))
-    )
-
-  pal <- c("green3", "#FFC200", "red")
-  pal <- setNames(pal, c("green", "orange", "red"))
+  pal <- c("red", "#FFC200", "green3")
 
   # Calculate the coordinates for the graph lines
   maxH <- max(data[, x], na.rm = TRUE)
@@ -51,7 +43,8 @@ compositeScatter <- function(data, x, y, xLab, yLab) {
       type = "scatter",
       mode = "lines",
       color = I("grey51"),
-      showlegend = FALSE
+      showlegend = FALSE,
+      hoverinfo = "none"
     ) %>%
     plotly::add_trace(
       x = midX,
@@ -59,31 +52,76 @@ compositeScatter <- function(data, x, y, xLab, yLab) {
       type = "scatter",
       mode = "lines",
       color = I("grey51"),
-      showlegend = FALSE
-    ) %>%
-    plotly::add_trace(
-      data = data,
-      type = "scatter",
-      mode = "markers",
-      x = as.formula(paste0("~", x)),
-      y = as.formula(paste0("~", y)),
-      color = ~emp_rate_hml,
-      symbol = ~emp_rate_hml,
-      text = ~paste0(
-        "Region: ", la_name,
-        "<br>x: ", data[, x], "%",
-        "<br>y: ", data[, y], "%"
-      ),
-      hoverinfo = "text",
-      marker = list(
-        size = 10
-      )
+      showlegend = FALSE,
+      hoverinfo = "none"
     ) %>%
     plotly::layout(
       xaxis = list(title = xLab),
       yaxis = list(title = yLab),
       legend = list(x = 100, y = 0.5)
     )
+
+  p <- if (is.null(highlight)) {
+    plotly::add_trace(
+      p = p,
+      data = data,
+      type = "scatter",
+      mode = "markers",
+      x = as.formula(paste0("~", x)),
+      y = as.formula(paste0("~", y)),
+      color = as.formula(paste0("~", colour)),
+      key = ~la_name,
+      text = ~paste0(
+        "Region: ", la_name,
+        "<br>(", data[, x], "%, ", data[, y], "%)"
+      ),
+      hoverinfo = "text",
+      marker = list(
+        size = 10
+      )
+    )
+  } else {
+    plotly::add_trace(
+      p = p,
+      data = data[!(data$la_name %in% highlight), ],
+      type = "scatter",
+      mode = "markers",
+      x = as.formula(paste0("~", x)),
+      y = as.formula(paste0("~", y)),
+      color = as.formula(paste0("~", colour)),
+      key = ~la_name,
+      opacity = 0.3,
+      text = ~paste0(
+        "Region: ", la_name,
+        "<br>(", data[!(data$la_name %in% highlight), x], "%, ",
+        data[!(data$la_name %in% highlight), y], "%)"
+      ),
+      hoverinfo = "text",
+      marker = list(
+        size = 10
+      )
+    ) %>%
+      plotly::add_trace(
+        data = data[data$la_name %in% highlight, ],
+        type = "scatter",
+        mode = "markers",
+        x = as.formula(paste0("~", x)),
+        y = as.formula(paste0("~", y)),
+        color = as.formula(paste0("~", colour)),
+        key = ~la_name,
+        text = ~paste0(
+          "Region: ", la_name,
+          "<br>(", data[data$la_name %in% highlight, x], "%, ",
+          data[data$la_name %in% highlight, y], "%)"
+        ),
+        hoverinfo = "text",
+        marker = list(
+          size = 10,
+          line = list(color = "black", width = 2)
+        ),
+        showlegend = FALSE
+      )
+  }
 
   p
 }

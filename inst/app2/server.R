@@ -212,12 +212,48 @@ server <- function(input, output, session) {
     validate(
       need(input$employData, "Please upload employment statistics")
     )
+
+    # calculate the scatter plot colour statistic
+    fullColour <- dataColumnChoices[dataColumnChoices$full %in% input[["scatColour"]], "short"]
+    colourQuant <- quantile(emp()[, fullColour], probs = c(1/3, 2/3), na.rm = TRUE)
+
+    compDat <- emp() %>%
+      mutate(
+        colourCol = factor(if_else(
+            emp()[, fullColour] < colourQuant[1], "red",
+            if_else(
+              emp()[, fullColour] >= colourQuant[1] &
+                emp()[, fullColour] < colourQuant[2],
+              "orange",
+              "green"
+            )
+          ),
+          levels = c("red", "orange", "green"),
+          labels = c(paste0("<", colourQuant[1]),
+                     paste0(colourQuant[1], "-", colourQuant[2]),
+                     paste0(">", colourQuant[2]))
+        ))
+
+    d <- event_data("plotly_click")
+
+    updateSelectizeInput(
+      session,
+      "ladSel",
+      choices = sort(unique(shape@data$lad15nm)),
+      selected = c(
+        input$ladSel,
+        d$key
+      )
+    )
+
     compositeScatter(
-      emp(),
+      compDat,
       x = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "short"],
       y = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "short"],
+      colour = "colourCol",
       xLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"],
-      yLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"]
+      yLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"],
+      highlight = input$ladSel
     )
   })
 

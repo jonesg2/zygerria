@@ -47,6 +47,17 @@ ui <- navbarPage(
     fluidRow(
       column(
         width = 6,
+        selectInput(
+          "scatColour",
+          label = "Choose a statistic",
+          choices = dataColumnChoices[c(3, 25:53), "full"],
+          selected = dataColumnChoices[3, "full"]
+        )
+      )
+    ),
+    fluidRow(
+      column(
+        width = 6,
         box(
           width = NULL,
           plotlyOutput("scatFig", height = 500)
