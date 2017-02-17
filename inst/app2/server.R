@@ -234,17 +234,18 @@ server <- function(input, output, session) {
                      paste0(">", colourQuant[2]))
         ))
 
-    d <- event_data("plotly_click")
-
-    updateSelectizeInput(
-      session,
-      "ladSel",
-      choices = sort(unique(shape@data$lad15nm)),
-      selected = c(
-        input$ladSel,
-        d$key
-      )
-    )
+    # d <- event_data("plotly_click")
+    # print(d)
+    #
+    # updateSelectizeInput(
+    #   session,
+    #   "ladSel",
+    #   choices = sort(unique(shape@data$lad15nm)),
+    #   selected = c(
+    #     input$ladSel,
+    #     d$key
+    #   )
+    # )
 
     compositeScatter(
       compDat,
