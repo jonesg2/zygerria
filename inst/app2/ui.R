@@ -5,7 +5,7 @@ ui <- navbarPage(
     fluidRow(
       column(
         width = 12,
-        includeMarkdown("welcome.md")
+        includeHTML("welcome.html")
       )
     )
   ),
