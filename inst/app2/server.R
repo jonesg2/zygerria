@@ -150,13 +150,12 @@ server <- function(input, output, session) {
 
   # reset region selection inputs on a button click
   observeEvent(input$clearSelection, {
-    if (!is.null(input$ladSel)) {
-      updateSelectizeInput(
-        session,
-        "ladSel",
-        choices = c(Choose = "", sort(unique(shape@data$lad15nm)))
-      )
-    }
+    clickData$e <- NULL
+    updateSelectizeInput(
+      session,
+      "ladSel",
+      choices = c(Choose = "", sort(unique(shape@data$lad15nm)))
+    )
   })
 
   #############################################################################
@@ -188,6 +187,13 @@ server <- function(input, output, session) {
   #############################################################################
   ## Create the scatter plot
 
+  # observe click events and enable them to be cleared
+  clickData <- reactiveValues(e = NULL)
+
+  observe({
+    clickData$e <- event_data("plotly_click")
+  })
+
   # output the scatter graph
   output$scatFig <- renderPlotly({
 
@@ -212,25 +218,15 @@ server <- function(input, output, session) {
                      paste0(">", colourQuant[2]))
         ))
 
-    d <- event_data("plotly_click")
-
     updateSelectizeInput(
       session,
       "ladSel",
       choices = sort(unique(shape@data$lad15nm)),
       selected = c(
         input$ladSel,
-        d$key
+        clickData$e$key
       )
     )
-
-    observeEvent(input[["clearSelection"]], {
-      updateSelectizeInput(
-        session,
-        "ladSel",
-        choices = sort(unique(shape@data$lad15nm))
-      )
-    })
 
     compositeScatter(
       compDat,
