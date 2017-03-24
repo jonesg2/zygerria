@@ -30,13 +30,6 @@ ui <- navbarPage(
           "Clear Selection(s)",
           icon = icon("trash-o")
         )
-      ),
-      column(
-        width = 3,
-        fileInput(
-          "employData",
-          label = "Upload the employment data"
-        )
       )
     ),
     fluidRow(
