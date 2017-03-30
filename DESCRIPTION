@@ -17,14 +17,13 @@ Depends:
 Imports:
     dplyr,
     DT,
-    ggplot2,
-    htmlwidgets,
-    leaflet,
+    leaflet (>= 1.1.0),
     plotly,
-    rgdal,
     shiny,
+    sp
+Suggests:
+    rgdal,
     shinydashboard,
-    sp,
     xml2
 Encoding: UTF-8
 LazyData: true
