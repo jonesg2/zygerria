@@ -5,3 +5,5 @@
 packrat/lib*/
 packrat/src*/
 *.DS_Store
+packrat/src/
+.Rapp.history

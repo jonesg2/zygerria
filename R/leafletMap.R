@@ -104,36 +104,6 @@ leafMap <- function(mapData, fill = NULL, hex = FALSE, addLegend = TRUE) {
       }
     }
   }
-  # if (!hex) {
-  #   map
-  # } else {
-  #   map %>%
-  #     styleMap()
-  # }
-  map
-}
 
-#' Apply a style to a leaflet map
-#'
-#' Apply a transparent background to a leaflet map
-#'
-#' @param map An object of class \code{leaflet}.
-#' @param style A list containing elements to apply to a \code{leaflet} object.
-#'
-#' @author Nathan Eastwood
-#'
-#' @importFrom htmlwidgets onRender JS
-styleMap <- function(map, style = list(background = 'transparent')) {
-  htmlwidgets::onRender(
-    x = map,
-    jsCode = htmlwidgets::JS(
-      "function(el, x, style) {
-         var myMap = this;
-         myMap._container.style = myMap._container.style || {};
-         $.each(style, function(key, value) {
-           myMap._container.style[key] = value;
-         });
-       }"),
-    data = style
-  )
+  map
 }

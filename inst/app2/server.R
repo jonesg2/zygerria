@@ -3,19 +3,6 @@ server <- function(input, output, session) {
   #############################################################################
   ## Load in Data
 
-  # make the csv file path reactive for use in the modules
-  empInput <- reactive({
-    input$employData
-  })
-
-  # load in the statistics data
-  emp <- reactive({
-    if (is.null(empInput())) return(NULL)
-    read.csv(empInput()$datapath,
-             stringsAsFactors = FALSE,
-             check.names = FALSE)
-  })
-
   # extract the short name to match the data
   shortNameOne <- reactive({
     dataColumnChoices[dataColumnChoices$full == input[["mapOneChoices-stat"]], "short"]
@@ -26,12 +13,12 @@ server <- function(input, output, session) {
 
   # create the leaflet and hex datasets
   geoData <- reactive({
-    createLeafletData(data = emp())
+    createLeafletData(data = emp)
   })
   # merge the statistics data with the hexagon map data
   hexData <- reactive({
     hexMapJson@data <- dplyr::left_join(
-      hexMapJson@data, emp(), by = c("lad15nm" = "la_name")
+      hexMapJson@data, emp, by = c("lad15nm" = "la_name")
     )
     hexMapJson
   })
@@ -42,13 +29,13 @@ server <- function(input, output, session) {
   # Map One
   mapOneData <- reactive({
     if (input[["mapOneChoices-mapType"]] == "hex") {
-      hexQuints <- calculateQuintiles(emp(), shortNameOne())
+      hexQuints <- calculateQuintiles(emp, shortNameOne())
       hexMapJson@data <- dplyr::left_join(
         hexMapJson@data, hexQuints, by = c("lad15nm" = "la_name")
       )
       hexMapJson
     } else {
-      createLeafletData(calculateQuintiles(emp(), shortNameOne()))
+      createLeafletData(calculateQuintiles(emp, shortNameOne()))
     }
   })
   mapOneType <- reactive({
@@ -77,13 +64,13 @@ server <- function(input, output, session) {
   # Map Two
   mapTwoData <- reactive({
     if (input[["mapTwoChoices-mapType"]] == "hex") {
-      hexQuints <- calculateQuintiles(emp(), shortNameTwo())
+      hexQuints <- calculateQuintiles(emp, shortNameTwo())
       hexMapJson@data <- dplyr::left_join(
         hexMapJson@data, hexQuints, by = c("lad15nm" = "la_name")
       )
       hexMapJson
     } else {
-      createLeafletData(calculateQuintiles(emp(), shortNameTwo()))
+      createLeafletData(calculateQuintiles(emp, shortNameTwo()))
     }
   })
   mapTwoType <- reactive({
@@ -123,9 +110,6 @@ server <- function(input, output, session) {
     mapOneMarkers()
     input[["mapOneChoices-fillType"]]
   }, {
-    validate(
-      need(emp(), "Please upload employment statistics")
-    )
     ladOne <- mapOneProxy %>%
       clearMarkerClusters() %>%
       clearMarkers()
@@ -149,9 +133,6 @@ server <- function(input, output, session) {
     mapTwoMarkers()
     input[["mapTwoChoices-fillType"]]
   }, {
-    validate(
-      need(emp(), "Please upload employment statistics")
-    )
     ladTwo <- mapTwoProxy %>%
       clearMarkerClusters() %>%
       clearMarkers()
@@ -169,13 +150,12 @@ server <- function(input, output, session) {
 
   # reset region selection inputs on a button click
   observeEvent(input$clearSelection, {
-    if (!is.null(input$ladSel)) {
-      updateSelectizeInput(
-        session,
-        "ladSel",
-        choices = c(Choose = "", sort(unique(shape@data$lad15nm)))
-      )
-    }
+    clickData$e <- NULL
+    updateSelectizeInput(
+      session,
+      "ladSel",
+      choices = c(Choose = "", sort(unique(shape@data$lad15nm)))
+    )
   })
 
   #############################################################################
@@ -207,23 +187,27 @@ server <- function(input, output, session) {
   #############################################################################
   ## Create the scatter plot
 
+  # observe click events and enable them to be cleared
+  clickData <- reactiveValues(e = NULL)
+
+  observe({
+    clickData$e <- event_data("plotly_click")
+  })
+
   # output the scatter graph
   output$scatFig <- renderPlotly({
-    validate(
-      need(input$employData, "Please upload employment statistics")
-    )
 
     # calculate the scatter plot colour statistic
     fullColour <- dataColumnChoices[dataColumnChoices$full %in% input[["scatColour"]], "short"]
-    colourQuant <- quantile(emp()[, fullColour], probs = c(1/3, 2/3), na.rm = TRUE)
+    colourQuant <- quantile(emp[, fullColour], probs = c(1/3, 2/3), na.rm = TRUE)
 
-    compDat <- emp() %>%
+    compDat <- emp %>%
       mutate(
         colourCol = factor(if_else(
-            emp()[, fullColour] < colourQuant[1], "red",
+            emp[, fullColour] < colourQuant[1], "red",
             if_else(
-              emp()[, fullColour] >= colourQuant[1] &
-                emp()[, fullColour] < colourQuant[2],
+              emp[, fullColour] >= colourQuant[1] &
+                emp[, fullColour] < colourQuant[2],
               "orange",
               "green"
             )
@@ -234,25 +218,15 @@ server <- function(input, output, session) {
                      paste0(">", colourQuant[2]))
         ))
 
-    d <- event_data("plotly_click")
-
     updateSelectizeInput(
       session,
       "ladSel",
       choices = sort(unique(shape@data$lad15nm)),
       selected = c(
         input$ladSel,
-        d$key
+        clickData$e$key
       )
     )
-
-    observeEvent(input[["clearSelection"]], {
-      updateSelectizeInput(
-        session,
-        "ladSel",
-        choices = sort(unique(shape@data$lad15nm))
-      )
-    })
 
     compositeScatter(
       compDat,

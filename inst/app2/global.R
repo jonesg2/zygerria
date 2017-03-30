@@ -1,5 +1,5 @@
 # load the package library
-library(employmentProspects)
+library(zygerria)
 
 # shiny libraries
 library(shiny)
@@ -12,6 +12,5 @@ library(dplyr)
 library(sp)
 
 # plotting libraries
-library(ggplot2)
 library(plotly)
 library(leaflet)
