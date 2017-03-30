@@ -1,4 +1,4 @@
-Package: employmentProspects
+Package: zygerria
 Type: Package
 Title: Future Employment Prospects Across Great Britain
 Version: 0.4.2
@@ -20,6 +20,8 @@ Imports:
     leaflet (>= 1.1.0),
     plotly,
     shiny,
+    shinydashboard,
+    shinythemes,
     sp
 Suggests:
     rgdal,
