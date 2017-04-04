@@ -6,12 +6,12 @@
 #'
 #' @export
 runEmploymentProspectsApp <- function() {
-  appDir <- system.file("app", package = "employmentProspects")
+  appDir <- system.file("app2", package = "zygerria")
   if (appDir == "") {
     stop(
       paste0(
         "Could not find example directory. Try re-installing ",
-        "`employmentProspects`."
+        "`zygerria`."
       ),
       call. = FALSE)
   }
