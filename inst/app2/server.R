@@ -266,7 +266,6 @@ server <- function(input, output, session) {
     rowNames <- dataColumnChoices[c(12, 5:7, 24, 13:17, 32:54), "full"]
     subDat <- geoData()[geoData()@data$lad15nm %in% input$ladSel, ]@data
     subDat <- subDat[order(match(subDat$lad15nm, input$ladSel)), ]
-    print(subDat)
     nmSub <- subDat$lad15nm
     subDat <- subDat[, colnames(subDat) %in% colsToShow]
     subDat <- as.data.frame(t(subDat))
@@ -274,6 +273,7 @@ server <- function(input, output, session) {
     subDat <- merge(columnMeans(geoData()[, colsToShow]@data), subDat)
     subDat <- subDat[match(colsToShow, subDat$measure), ]
     subDat <- subDat[, !(colnames(subDat) %in% "measure")]
+
     # We need a check for a dataframe here otherwise we get an error when it
     # tries to set the columns names of something that isn't a dataframe.
     # I think this is due to the renderDataTable taking precedence over the
@@ -282,6 +282,7 @@ server <- function(input, output, session) {
       colnames(subDat) <- c("National Average", nmSub)
       rownames(subDat) <- rowNames
     }
+    subDat
   })
 
   observe({
