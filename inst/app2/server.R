@@ -282,15 +282,13 @@ server <- function(input, output, session) {
   #############################################################################
   ## Download Handler
 
-  DL <- reactive(subDat)
-
   output$downloadData <- downloadHandler(
     filename = "Download.csv",
     content = function(file) {
-      write.csv(DL(), file)
+      write.csv(XXXXXXX, file)
     }
   )
-
+##### Button present on app but cannot find object to write to csv.
 
   #############################################################################
   ## Create the time series plot
