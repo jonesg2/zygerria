@@ -76,7 +76,8 @@ ui <- navbarPage(
           width = NULL,
           conditionalPanel(
             condition = "input$ladSel != ''",
-            dataTableOutput("dataTable")
+            dataTableOutput("dataTable"),
+            downloadButton("downloadData", "Download.csv")
           )
         )
       )

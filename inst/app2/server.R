@@ -280,6 +280,19 @@ server <- function(input, output, session) {
   })
 
   #############################################################################
+  ## Download Handler
+
+  DL <- reactive(subDat)
+
+  output$downloadData <- downloadHandler(
+    filename = "Download.csv",
+    content = function(file) {
+      write.csv(DL(), file)
+    }
+  )
+
+
+  #############################################################################
   ## Create the time series plot
 
   output$timeseries <- renderPlotly({
