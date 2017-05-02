@@ -205,6 +205,13 @@ server <- function(input, output, session) {
     clickData$e <- event_data("plotly_click")
   })
 
+  # colourscale reactive element
+  colScale <- reactive({
+    switch(input$colScale,
+           "Descrete" = "colourCol",
+           "Continuous" = fullColour)
+  })
+
   # output the scatter graph
   output$scatFig <- renderPlotly({
 
@@ -243,7 +250,7 @@ server <- function(input, output, session) {
       compDat,
       x = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "short"],
       y = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "short"],
-      colour = "colourCol",
+      colour = fullColour,
       xLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"],
       yLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"],
       highlight = input$ladSel
@@ -254,36 +261,40 @@ server <- function(input, output, session) {
   ## Create the datatable
 
   # on selection from the drop down menu, display the region's data in a table
+  subDat <- reactive ({
+    colsToShow <- dataColumnChoices[c(12, 5:7, 24, 13:17, 32:54), "short"]
+    rowNames <- dataColumnChoices[c(12, 5:7, 24, 13:17, 32:54), "full"]
+    subDat <- geoData()[geoData()@data$lad15nm %in% input$ladSel, ]@data
+    subDat <- subDat[order(match(subDat$lad15nm, input$ladSel)), ]
+    print(subDat)
+    nmSub <- subDat$lad15nm
+    subDat <- subDat[, colnames(subDat) %in% colsToShow]
+    subDat <- as.data.frame(t(subDat))
+    subDat$measure <- rownames(subDat)
+    subDat <- merge(columnMeans(geoData()[, colsToShow]@data), subDat)
+    subDat <- subDat[match(colsToShow, subDat$measure), ]
+    subDat <- subDat[, !(colnames(subDat) %in% "measure")]
+    # We need a check for a dataframe here otherwise we get an error when it
+    # tries to set the columns names of something that isn't a dataframe.
+    # I think this is due to the renderDataTable taking precedence over the
+    # observe test
+    if (is.data.frame(subDat)) {
+      colnames(subDat) <- c("National Average", nmSub)
+      rownames(subDat) <- rowNames
+    }
+  })
+
   observe({
     if (!is.null(input$ladSel)) {
-      colsToShow <- dataColumnChoices[c(12, 5:7, 24, 13:17, 32:54), "short"]
-      rowNames <- dataColumnChoices[c(12, 5:7, 24, 13:17, 32:54), "full"]
       output$dataTable <- renderDataTable({
-        subDat <- geoData()[geoData()@data$lad15nm %in% input$ladSel, ]@data
-        subDat <- subDat[order(match(subDat$lad15nm, input$ladSel)), ]
-        nmSub <- subDat$lad15nm
-        subDat <- subDat[, colnames(subDat) %in% colsToShow]
-        subDat <- as.data.frame(t(subDat))
-        subDat$measure <- rownames(subDat)
-        subDat <- merge(columnMeans(geoData()[, colsToShow]@data), subDat)
-        subDat <- subDat[match(colsToShow, subDat$measure), ]
-        subDat <- subDat[, !(colnames(subDat) %in% "measure")]
-        # We need a check for a dataframe here otherwise we get an error when it
-        # tries to set the columns names of something that isn't a dataframe.
-        # I think this is due to the renderDataTable taking precedence over the
-        # observe test
-        if (is.data.frame(subDat)) {
-          colnames(subDat) <- c("National Average", nmSub)
-          rownames(subDat) <- rowNames
           datatable(
-            subDat,
+            subDat(),
             options = list(
               pageLength = 10,
               lengthMenu = c(10, 20, 30, 40),
               dom = "tlp"
             )
           )
-        }
       })
     } else {
       return(NULL)
@@ -296,7 +307,7 @@ server <- function(input, output, session) {
   output$downloadData <- downloadHandler(
     filename = "Download.csv",
     content = function(file) {
-      write.csv(XXXXXXX, file)
+      write.csv(subDat(), file)
     }
   )
 ##### Button present on app but cannot find object to write to csv.

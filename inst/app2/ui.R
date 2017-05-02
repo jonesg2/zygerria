@@ -71,6 +71,17 @@ ui <- navbarPage(
     fluidRow(
       column(
         width = 6,
+        radioButtons(
+          "colScale",
+          label = "Choose a colour scale",
+          choices = c("Descrete" = "Descrete", "Continous" = "Continous"),
+          selected = "Descrete",
+          inline = TRUE
+      )
+    )),
+    fluidRow(
+      column(
+        width = 6,
         box(
           width = NULL,
           plotlyOutput("scatFig", height = 500)
