@@ -159,6 +159,17 @@ server <- function(input, output, session) {
   })
 
   #############################################################################
+  ## Add Value Boxes
+
+  output$mapOneBox <- renderValueBox({
+    valueBox("mapOne ValueBox", "Test")
+  })
+
+  output$mapTwoBox <- renderValueBox({
+    valueBox("mapTwo ValueBox", "Test")
+  })
+
+  #############################################################################
   ## Add inputs on map click
 
   observeEvent(input[["mapOne-map_shape_click"]], {
