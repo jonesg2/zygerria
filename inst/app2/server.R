@@ -205,13 +205,6 @@ server <- function(input, output, session) {
     clickData$e <- event_data("plotly_click")
   })
 
-  # colourscale reactive element
-  colScale <- reactive({
-    switch(input$colScale,
-           "Descrete" = "colourCol",
-           "Continuous" = fullColour)
-  })
-
   # output the scatter graph
   output$scatFig <- renderPlotly({
 
@@ -246,15 +239,27 @@ server <- function(input, output, session) {
       )
     )
 
-    compositeScatter(
-      compDat,
-      x = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "short"],
-      y = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "short"],
-      colour = "colourCol",
-      xLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"],
-      yLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"],
-      highlight = input$ladSel
-    )
+    if(input$colScale == "des"){
+      compositeScatter(
+        compDat,
+        x = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "short"],
+        y = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "short"],
+        colour = "colourCol",
+        xLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"],
+        yLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"],
+        highlight = input$ladSel
+      )
+    } else {
+      compositeScatter(
+        compDat,
+        x = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "short"],
+        y = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "short"],
+        colour = fullColour,
+        xLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"],
+        yLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"],
+        highlight = input$ladSel
+      )
+    }
   })
 
   #############################################################################
@@ -273,7 +278,6 @@ server <- function(input, output, session) {
     subDat <- merge(columnMeans(geoData()[, colsToShow]@data), subDat)
     subDat <- subDat[match(colsToShow, subDat$measure), ]
     subDat <- subDat[, !(colnames(subDat) %in% "measure")]
-
     # We need a check for a dataframe here otherwise we get an error when it
     # tries to set the columns names of something that isn't a dataframe.
     # I think this is due to the renderDataTable taking precedence over the
@@ -284,7 +288,6 @@ server <- function(input, output, session) {
     }
     subDat
   })
-
   observe({
     if (!is.null(input$ladSel)) {
       output$dataTable <- renderDataTable({
