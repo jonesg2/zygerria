@@ -250,7 +250,7 @@ server <- function(input, output, session) {
       compDat,
       x = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "short"],
       y = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "short"],
-      colour = fullColour,
+      colour = "colourCol",
       xLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"],
       yLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"],
       highlight = input$ladSel
