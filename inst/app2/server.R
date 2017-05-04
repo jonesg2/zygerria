@@ -314,7 +314,6 @@ server <- function(input, output, session) {
       write.csv(subDat(), file)
     }
   )
-##### Button present on app but cannot find object to write to csv.
 
   #############################################################################
   ## Create the time series plot
