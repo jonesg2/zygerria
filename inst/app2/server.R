@@ -162,11 +162,11 @@ server <- function(input, output, session) {
   ## Add Value Boxes
 
   output$mapOneBox <- renderValueBox({
-    valueBox("mapOne ValueBox", "Test")
+    valueBox("mapOne ValueBox", dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"])
   })
 
   output$mapTwoBox <- renderValueBox({
-    valueBox("mapTwo ValueBox", "Test")
+    valueBox("mapTwo ValueBox", dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"])
   })
 
   #############################################################################
@@ -288,18 +288,17 @@ server <- function(input, output, session) {
     }
     subDat
   })
-  observe({
-    if (!is.null(input$ladSel)) {
-      output$dataTable <- renderDataTable({
-          datatable(
-            subDat(),
-            options = list(
-              pageLength = 10,
-              lengthMenu = c(10, 20, 30, 40),
-              dom = "tlp"
-            )
-          )
-      })
+
+  output$dataTable <- renderDataTable({
+    if (is.data.frame(subDat())) {
+      datatable(
+        subDat(),
+        options = list(
+          pageLength = 10,
+          lengthMenu = c(10, 20, 30, 40),
+          dom = "tlp"
+        )
+      )
     } else {
       return(NULL)
     }
