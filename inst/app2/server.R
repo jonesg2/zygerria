@@ -159,6 +159,43 @@ server <- function(input, output, session) {
   })
 
   #############################################################################
+  ## map hover info into value boxes
+
+  observeEvent(input$"mapOne-map_shape_mouseover", {
+    output$mapOnehover <- renderUI({
+      point <- as.data.frame(input$"mapOne-map_shape_mouseover")
+      info <- geoData()[geoData()@data$lad15cd %in% point$id, ]@data
+      tagList(
+        br(),
+        valueBox(
+          value = info[, "lad15nm"],
+          subtitle = paste(dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"],
+                           info[, shortNameOne()],
+                           sep = " = "),
+          width = NULL
+        )
+      )
+    })
+  })
+
+  observeEvent(input$"mapTwo-map_shape_mouseover", {
+    output$mapTwohover <- renderUI({
+      point <- as.data.frame(input$"mapTwo-map_shape_mouseover")
+      info <- geoData()[geoData()@data$lad15cd %in% point$id, ]@data
+      tagList(
+        br(),
+        valueBox(
+          value = info[, "lad15nm"],
+          subtitle = paste(dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"],
+                       info[, shortNameTwo()],
+                       sep = " = "),
+          width = NULL
+        )
+      )
+    })
+  })
+
+  #############################################################################
   ## Add inputs on map click
 
   observeEvent(input[["mapOne-map_shape_click"]], {
@@ -228,56 +265,80 @@ server <- function(input, output, session) {
       )
     )
 
-    compositeScatter(
-      compDat,
-      x = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "short"],
-      y = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "short"],
-      colour = "colourCol",
-      xLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"],
-      yLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"],
-      highlight = input$ladSel
-    )
+    if(input$colScale == "des"){
+      compositeScatter(
+        compDat,
+        x = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "short"],
+        y = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "short"],
+        colour = "colourCol",
+        xLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"],
+        yLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"],
+        highlight = input$ladSel
+      )
+    } else {
+      compositeScatter(
+        compDat,
+        x = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "short"],
+        y = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "short"],
+        colour = fullColour,
+        xLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"],
+        yLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"],
+        highlight = input$ladSel
+      )
+    }
   })
 
   #############################################################################
   ## Create the datatable
 
   # on selection from the drop down menu, display the region's data in a table
-  observe({
-    if (!is.null(input$ladSel)) {
-      colsToShow <- dataColumnChoices[c(12, 5:7, 24, 13:17, 32:54), "short"]
-      rowNames <- dataColumnChoices[c(12, 5:7, 24, 13:17, 32:54), "full"]
-      output$dataTable <- renderDataTable({
-        subDat <- geoData()[geoData()@data$lad15nm %in% input$ladSel, ]@data
-        subDat <- subDat[order(match(subDat$lad15nm, input$ladSel)), ]
-        nmSub <- subDat$lad15nm
-        subDat <- subDat[, colnames(subDat) %in% colsToShow]
-        subDat <- as.data.frame(t(subDat))
-        subDat$measure <- rownames(subDat)
-        subDat <- merge(columnMeans(geoData()[, colsToShow]@data), subDat)
-        subDat <- subDat[match(colsToShow, subDat$measure), ]
-        subDat <- subDat[, !(colnames(subDat) %in% "measure")]
-        # We need a check for a dataframe here otherwise we get an error when it
-        # tries to set the columns names of something that isn't a dataframe.
-        # I think this is due to the renderDataTable taking precedence over the
-        # observe test
-        if (is.data.frame(subDat)) {
-          colnames(subDat) <- c("National Average", nmSub)
-          rownames(subDat) <- rowNames
-          datatable(
-            subDat,
-            options = list(
-              pageLength = 10,
-              lengthMenu = c(10, 20, 30, 40),
-              dom = "tlp"
-            )
-          )
-        }
-      })
+  subDat <- reactive ({
+    colsToShow <- dataColumnChoices[c(12, 5:7, 24, 13:17, 32:54), "short"]
+    rowNames <- dataColumnChoices[c(12, 5:7, 24, 13:17, 32:54), "full"]
+    subDat <- geoData()[geoData()@data$lad15nm %in% input$ladSel, ]@data
+    subDat <- subDat[order(match(subDat$lad15nm, input$ladSel)), ]
+    nmSub <- subDat$lad15nm
+    subDat <- subDat[, colnames(subDat) %in% colsToShow]
+    subDat <- as.data.frame(t(subDat))
+    subDat$measure <- rownames(subDat)
+    subDat <- merge(columnMeans(geoData()[, colsToShow]@data), subDat)
+    subDat <- subDat[match(colsToShow, subDat$measure), ]
+    subDat <- subDat[, !(colnames(subDat) %in% "measure")]
+    # We need a check for a dataframe here otherwise we get an error when it
+    # tries to set the columns names of something that isn't a dataframe.
+    # I think this is due to the renderDataTable taking precedence over the
+    # observe test
+    if (is.data.frame(subDat)) {
+      colnames(subDat) <- c("National Average", nmSub)
+      rownames(subDat) <- rowNames
+    }
+    subDat
+  })
+
+  output$dataTable <- renderDataTable({
+    if (is.data.frame(subDat())) {
+      datatable(
+        subDat(),
+        options = list(
+          pageLength = 10,
+          lengthMenu = c(10, 20, 30, 40),
+          dom = "tlp"
+        )
+      )
     } else {
       return(NULL)
     }
   })
+
+  #############################################################################
+  ## Download Handler
+
+  output$downloadData <- downloadHandler(
+    filename = "Download.csv",
+    content = function(file) {
+      write.csv(subDat(), file)
+    }
+  )
 
   #############################################################################
   ## Create the time series plot

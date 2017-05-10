@@ -12,6 +12,13 @@ ui <- navbarPage(
   tabPanel(
     "Maps",
     fluidRow(
+      column(width = 12,
+             tags$div(p("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                        etdolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                        aliquip ex ea commodo consequat. Duisaute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                        qui officia deserunt mollit anim id est laborum.", align = "justify")))),
+    fluidRow(
       tags$div(mapChoicesUI("mapOneChoices"), class = "tab-pane"),
       tags$div(mapChoicesUI("mapTwoChoices"), class = "tab-pane"),
       column(
@@ -36,7 +43,20 @@ ui <- navbarPage(
       tags$div(appMapInput("mapOne"), class = "tab-pane"),
       tags$div(appMapInput("mapTwo"), class = "tab-pane")
     ),
+    fluidRow(
+      column(width = 6,
+             uiOutput("mapOnehover")),
+      column(width = 6,
+             uiOutput("mapTwohover"))
+    ),
     br(),
+    fluidRow(
+      column(width = 12,
+             tags$div(p("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                        etdolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                        aliquip ex ea commodo consequat. Duisaute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                        qui officia deserunt mollit anim id est laborum.", align = "justify")))),
     fluidRow(
       column(
         width = 6,
@@ -51,6 +71,17 @@ ui <- navbarPage(
     fluidRow(
       column(
         width = 6,
+        radioButtons(
+          "colScale",
+          label = "Choose a colour scale",
+          choices = c("Descrete" = "des", "Continous" = "cont"),
+          selected = "des",
+          inline = TRUE
+      )
+    )),
+    fluidRow(
+      column(
+        width = 6,
         box(
           width = NULL,
           plotlyOutput("scatFig", height = 500)
@@ -62,7 +93,8 @@ ui <- navbarPage(
           width = NULL,
           conditionalPanel(
             condition = "input$ladSel != ''",
-            dataTableOutput("dataTable")
+            dataTableOutput("dataTable"),
+            downloadButton("downloadData", "Download.csv")
           )
         )
       )
@@ -70,6 +102,13 @@ ui <- navbarPage(
   ),
   tabPanel(
     "Time Series",
+    fluidRow(
+      column(width = 12,
+             tags$div(p("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                        etdolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                        aliquip ex ea commodo consequat. Duisaute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                        qui officia deserunt mollit anim id est laborum.", align = "justify")))),
     fluidRow(
       column(
         width = 6,

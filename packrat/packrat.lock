@@ -106,7 +106,7 @@ Hash: cd78381a9d3fea966ac39bd0daaf5554
 Package: hexbin
 Source: CRAN
 Version: 1.27.1
-Hash: 9f94c576cc4b9e83fd714ae8387272e6
+Hash: 378383b2c37556649fd6b2ee0be7e2a5
 
 Package: htmltools
 Source: CRAN
@@ -230,8 +230,8 @@ Requires: Rcpp, plyr, stringr
 
 Package: rgdal
 Source: CRAN
-Version: 1.2-5
-Hash: 2833eb89d8c3fe89f08c49069896a323
+Version: 1.2-7
+Hash: d79393d8e532c8da734a0735ce20c7da
 Requires: sp
 
 Package: scales
@@ -242,8 +242,8 @@ Requires: RColorBrewer, Rcpp, dichromat, labeling, munsell, plyr
 
 Package: shiny
 Source: CRAN
-Version: 1.0.0
-Hash: 315fd5ac8ada4047f81af7c19d5a5974
+Version: 1.0.3
+Hash: f133585c72ea31592f663e68c6ff0b3e
 Requires: R6, digest, htmltools, httpuv, jsonlite, mime, sourcetools,
     xtable
 
