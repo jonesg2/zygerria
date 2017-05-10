@@ -45,9 +45,9 @@ ui <- navbarPage(
     ),
     fluidRow(
       column(width = 6,
-             valueBoxOutput("mapOneBox")),
+             uiOutput("mapOnehover")),
       column(width = 6,
-             valueBoxOutput("mapTwoBox"))
+             uiOutput("mapTwohover"))
     ),
     br(),
     fluidRow(

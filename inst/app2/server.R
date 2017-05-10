@@ -159,14 +159,40 @@ server <- function(input, output, session) {
   })
 
   #############################################################################
-  ## Add Value Boxes
+  ## map hover info into value boxes
 
-  output$mapOneBox <- renderValueBox({
-    valueBox("mapOne ValueBox", dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"])
+  observeEvent(input$"mapOne-map_shape_mouseover", {
+    output$mapOnehover <- renderUI({
+      point <- as.data.frame(input$"mapOne-map_shape_mouseover")
+      info <- geoData()[geoData()@data$lad15cd %in% point$id, ]@data
+      tagList(
+        br(),
+        valueBox(
+          value = info[, "lad15nm"],
+          subtitle = paste(dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"],
+                           info[, shortNameOne()],
+                           sep = " = "),
+          width = NULL
+        )
+      )
+    })
   })
 
-  output$mapTwoBox <- renderValueBox({
-    valueBox("mapTwo ValueBox", dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"])
+  observeEvent(input$"mapTwo-map_shape_mouseover", {
+    output$mapTwohover <- renderUI({
+      point <- as.data.frame(input$"mapTwo-map_shape_mouseover")
+      info <- geoData()[geoData()@data$lad15cd %in% point$id, ]@data
+      tagList(
+        br(),
+        valueBox(
+          value = info[, "lad15nm"],
+          subtitle = paste(dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"],
+                       info[, shortNameTwo()],
+                       sep = " = "),
+          width = NULL
+        )
+      )
+    })
   })
 
   #############################################################################
