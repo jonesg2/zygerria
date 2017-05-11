@@ -16,4 +16,3 @@ Ultra Generalised Clipped Shapefile data for the Local Authority Districts
 (LAD) in the UK from December 2015.
 }
 \keyword{datasets}
-

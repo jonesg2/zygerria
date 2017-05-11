@@ -25,4 +25,3 @@ by their statistics.
 \author{
 Nathan Eastwood
 }
-

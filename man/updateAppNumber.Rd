@@ -13,4 +13,3 @@ package version number.
 \author{
 Nathan Eastwood
 }
-

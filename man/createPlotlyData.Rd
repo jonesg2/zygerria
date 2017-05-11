@@ -16,4 +16,3 @@ district statistics.
 \author{
 Nathan Eastwood
 }
-

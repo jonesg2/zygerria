@@ -14,4 +14,3 @@ equally sized hexagons. The data are of class
 \code{SpatialPolygonsDataFrame}.
 }
 \keyword{datasets}
-

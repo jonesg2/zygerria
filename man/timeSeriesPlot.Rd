@@ -25,4 +25,3 @@ timeSeriesPlot(empTime, x = "year", y = "val", color = "la_name")
 \author{
 Nathan Eastwood
 }
-

@@ -20,4 +20,3 @@ Return the column means of a dataframe or matrix as a dataframe.
 \author{
 Nathan Eastwood
 }
-

@@ -17,4 +17,3 @@ Round up to nearest number
 \author{
 Nathan Eastwood
 }
-
