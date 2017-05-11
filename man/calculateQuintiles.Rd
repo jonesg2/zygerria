@@ -21,4 +21,3 @@ Calculate the quintiles of a given column in a dataframe.
 \author{
 Nathan Eastwood
 }
-

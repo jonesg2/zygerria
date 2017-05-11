@@ -23,11 +23,7 @@ Imports:
     shinydashboard,
     shinythemes,
     sp
-Suggests:
-    rgdal,
-    shinydashboard,
-    xml2
+Suggests: testthat
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 5.0.1
-Suggests: testthat
+RoxygenNote: 6.0.1

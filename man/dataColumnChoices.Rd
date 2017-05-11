@@ -14,4 +14,3 @@ used within the Shiny App and maps the full column names to their short hand
 counter parts.
 }
 \keyword{datasets}
-

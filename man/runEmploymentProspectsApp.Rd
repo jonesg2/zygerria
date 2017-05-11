@@ -12,4 +12,3 @@ Run the future employment prospects app
 \author{
 Nathan Eastwood
 }
-

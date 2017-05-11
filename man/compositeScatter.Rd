@@ -4,7 +4,8 @@
 \alias{compositeScatter}
 \title{Comparison of Composite Variables}
 \usage{
-compositeScatter(data, x, y, colour, xLab, yLab, highlight = NULL)
+compositeScatter(data, x, y, colour, xLab, yLab, highlight = NULL,
+  discrete = TRUE)
 }
 \arguments{
 \item{data}{The employment data, see details for more information.}
@@ -19,7 +20,10 @@ compositeScatter(data, x, y, colour, xLab, yLab, highlight = NULL)
 
 \item{yLab}{The y-axis label.}
 
-\item{highlight}{A vector of Local Authority District names to highlight on the plot.}
+\item{highlight}{A vector of Local Authority District names to highlight on
+the plot.}
+
+\item{discrete}{Logical. Whether the data are discrete or continuous.}
 }
 \description{
 Create a scatter plot of the composite variables
@@ -31,4 +35,3 @@ employment rate statistics.
 \author{
 Nathan Eastwood
 }
-

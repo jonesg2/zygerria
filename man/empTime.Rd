@@ -12,4 +12,3 @@ data(empTime)
 The employment rates for each LAD from 2012 to 2016.
 }
 \keyword{datasets}
-

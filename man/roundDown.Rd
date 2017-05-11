@@ -15,4 +15,3 @@ Round down to nearest 10
 \author{
 Nathan Eastwood
 }
-

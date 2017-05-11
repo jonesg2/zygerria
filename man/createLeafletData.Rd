@@ -15,4 +15,3 @@ Merge the statistic data with the map data for the leaflet plot
 \author{
 Nathan Eastwood
 }
-

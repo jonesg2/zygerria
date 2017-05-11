@@ -20,4 +20,3 @@ Input both the hexagonal or geographical maps into a page within the app.
 \author{
 Nathan Eastwood
 }
-
