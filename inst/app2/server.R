@@ -265,27 +265,16 @@ server <- function(input, output, session) {
       )
     )
 
-    if(input$colScale == "des"){
-      compositeScatter(
-        compDat,
-        x = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "short"],
-        y = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "short"],
-        colour = "colourCol",
-        xLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"],
-        yLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"],
-        highlight = input$ladSel
-      )
-    } else {
-      compositeScatter(
-        compDat,
-        x = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "short"],
-        y = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "short"],
-        colour = fullColour,
-        xLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"],
-        yLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"],
-        highlight = input$ladSel
-      )
-    }
+    compositeScatter(
+      compDat,
+      x = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "short"],
+      y = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "short"],
+      colour = ifelse(input[["colScale"]] == "des", "colourCol", fullColour),
+      xLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapTwoChoices-stat"]], "full"],
+      yLab = dataColumnChoices[dataColumnChoices$full %in% input[["mapOneChoices-stat"]], "full"],
+      highlight = input$ladSel,
+      discrete = ifelse(input[["colScale"]] == "des", TRUE, FALSE)
+    )
   })
 
   #############################################################################

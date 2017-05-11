@@ -8,7 +8,9 @@
 #' @param colour The column to colour the points by.
 #' @param xLab The x-axis label.
 #' @param yLab The y-axis label.
-#' @param highlight A vector of Local Authority District names to highlight on the plot.
+#' @param highlight A vector of Local Authority District names to highlight on
+#'   the plot.
+#' @param discrete Logical. Whether the data are discrete or continuous.
 #'
 #' @details
 #' The \code{data} needs to contain \code{measureA}, \code{measureB} and the
@@ -21,9 +23,14 @@
 #' @importFrom dplyr mutate if_else
 #'
 #' @export
-compositeScatter <- function(data, x, y, colour, xLab, yLab, highlight = NULL) {
+compositeScatter <- function(data, x, y, colour, xLab, yLab, highlight = NULL,
+                             discrete = TRUE) {
 
-  pal <- c("red", "#FFC200", "green3")
+  pal <- if (discrete) {
+    c("red", "#EF9C61", "#4575B3")
+  } else {
+    c("red", "#FFFCB4", "#4575B3")
+  }
 
   # Calculate the coordinates for the graph lines
   maxH <- max(data[, x], na.rm = TRUE)
@@ -34,10 +41,9 @@ compositeScatter <- function(data, x, y, colour, xLab, yLab, highlight = NULL) {
   midY <- c(median(verticalLine), median(verticalLine))
 
   p <- plotly::plot_ly(
-    symbols = c("circle", "x", "o"),
     colors = pal
   ) %>%
-    plotly::add_trace(
+    plotly::add_trace(# Add horizontal and vertical lines
       x = horizontalLine,
       y = midY,
       type = "scatter",
@@ -55,14 +61,20 @@ compositeScatter <- function(data, x, y, colour, xLab, yLab, highlight = NULL) {
       showlegend = FALSE,
       hoverinfo = "none"
     ) %>%
-    plotly::layout(
+    plotly::layout(# Define the x and y axis labels, define the legend position
       xaxis = list(title = xLab),
       yaxis = list(title = yLab),
       legend = list(x = 100, y = 0.5)
     )
 
+  colourBar <- if (discrete) {
+    FALSE
+  } else {
+    list(len = 0.5, title = "")
+  }
+
   p <- if (is.null(highlight)) {
-    plotly::add_trace(
+    plotly::add_trace(# Add all points to the plot
       p = p,
       data = data,
       type = "scatter",
@@ -77,11 +89,13 @@ compositeScatter <- function(data, x, y, colour, xLab, yLab, highlight = NULL) {
       ),
       hoverinfo = "text",
       marker = list(
-        size = 10
-      )
+        size = 10,
+        colorbar = colourBar
+      ),
+      showlegend = ifelse(discrete == TRUE, TRUE, FALSE)
     )
   } else {
-    plotly::add_trace(
+    plotly::add_trace(# When regions are selected, highlight them on the plot
       p = p,
       data = data[!(data$la_name %in% highlight), ],
       type = "scatter",
@@ -98,8 +112,10 @@ compositeScatter <- function(data, x, y, colour, xLab, yLab, highlight = NULL) {
       ),
       hoverinfo = "text",
       marker = list(
-        size = 10
-      )
+        size = 10,
+        colorbar = colourBar
+      ),
+      showlegend = ifelse(discrete == TRUE, TRUE, FALSE)
     ) %>%
       plotly::add_trace(
         data = data[data$la_name %in% highlight, ],
@@ -117,7 +133,8 @@ compositeScatter <- function(data, x, y, colour, xLab, yLab, highlight = NULL) {
         hoverinfo = "text",
         marker = list(
           size = 10,
-          line = list(color = "black", width = 2)
+          line = list(color = "black", width = 2),
+          colorbar = colourBar
         ),
         showlegend = FALSE
       )
