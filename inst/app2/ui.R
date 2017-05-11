@@ -74,7 +74,7 @@ ui <- navbarPage(
         radioButtons(
           "colScale",
           label = "Choose a colour scale",
-          choices = c("Descrete" = "des", "Continous" = "cont"),
+          choices = c("Discrete" = "des", "Continous" = "cont"),
           selected = "des",
           inline = TRUE
       )
